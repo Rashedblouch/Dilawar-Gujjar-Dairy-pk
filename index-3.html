@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>Dilawar Gujjar Dairy</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║  DILAWAR GUJAR DAIRY — COMPLETE WEB STORE               ║
+  ║  GitHub Pages / Vercel Ready  |  Single HTML File       ║
+  ║                                                         ║
+  ║  HOW TO CUSTOMIZE:                                      ║
+  ║  1. Search "WHATSAPP_NUMBER" → put your number          ║
+  ║  2. To add product photos:                              ║
+  ║     • Create folder "images/" next to this file         ║
+  ║     • Upload: milk.jpg, dahi.jpg, lassi.jpg,            ║
+  ║       ghee.jpg, butter.jpg, bread.jpg,                  ║
+  ║       eggs.jpg, juice.jpg, coldrink.jpg                 ║
+  ║     • The website will auto-use them!                   ║
+  ╚══════════════════════════════════════════════════════════╝
+-->
+<style>
+/* ══ VARIABLES ══ */
+:root{
+  --b9:#03082e; --b8:#061240; --b7:#0a1f6e; --b6:#1435b5;
+  --b5:#1a4fd8; --b4:#2e6fff; --b3:#5b8fff; --b1:#c8d9ff;
+  --red:#d41f2a; --redb:#ff3a47;
+  --gold:#f5c842; --goldb:#ffe080;
+  --white:#fff; --offwhite:#f7f9ff;
+  --card:#fff;
+  --td:#0d1b3e; --tm:#4a5a8a; --tl:#8899cc;
+  --green:#1cb86e;
+  --r:18px; --rsm:12px;
+  --sh:0 8px 32px rgba(10,31,110,.2);
+  --shl:0 20px 60px rgba(0,0,0,.35);
+  --tr:all .28s cubic-bezier(.4,0,.2,1);
+  --fen:'Poppins',sans-serif; --fur:'Noto Nastaliq Urdu',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--fen);background:var(--b9);
+  color:#fff;overflow-x:hidden;min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+}
+body.ur{font-family:var(--fur);direction:rtl;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--b9);}
+::-webkit-scrollbar-thumb{background:var(--b4);border-radius:99px;}
+button{cursor:pointer;border:none;outline:none;font-family:inherit;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;}
+
+/* ══ BACKGROUND ══ */
+.bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(160deg,#0a1f6e 0%,#03082e 40%,#0a1231 70%,#0e0520 100%);
+}
+.bg::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 15%,rgba(26,79,216,.5) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 80%,rgba(212,31,42,.18) 0%,transparent 55%);
+}
+.bg::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle 1px at 1px 1px,rgba(255,255,255,.06) 1px,transparent 0);
+  background-size:28px 28px;
+}
+.orb1,.orb2{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
+.orb1{width:400px;height:400px;background:rgba(46,111,255,.12);top:-120px;left:-120px;animation:d1 12s ease-in-out infinite;}
+.orb2{width:300px;height:300px;background:rgba(212,31,42,.1);bottom:-80px;right:-80px;animation:d2 10s ease-in-out infinite;}
+@keyframes d1{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,30px);}}
+@keyframes d2{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,-25px);}}
+
+/* ══ LAYOUT ══ */
+.site{position:relative;z-index:1;min-height:100vh;padding-bottom:72px;}
+@media(min-width:768px){.site{padding-bottom:0;}}
+
+/* ══ HEADER ══ */
+header{
+  position:sticky;top:0;z-index:90;
+  background:rgba(6,18,64,.93);backdrop-filter:blur(20px);
+  border-bottom:1.5px solid rgba(77,140,255,.2);
+  box-shadow:0 4px 28px rgba(0,0,0,.4);
+}
+.hdr{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 16px;gap:10px;
+}
+.backbtn{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);
+  color:#fff;font-size:1.1rem;display:none;
+  align-items:center;justify-content:center;transition:var(--tr);flex-shrink:0;
+}
+.backbtn:hover{background:var(--b5);}
+.backbtn.vis{display:flex;}
+.logo{display:flex;align-items:center;gap:11px;flex:1;min-width:0;}
+.logo-ico{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--red),var(--redb));
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 4px 14px rgba(212,31,42,.4);border:2px solid rgba(255,255,255,.18);
+  transition:var(--tr);
+}
+.logo:hover .logo-ico{transform:rotate(-8deg) scale(1.08);}
+.logo-nm{
+  font-family:'Pacifico',cursive;font-size:1.1rem;color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.logo-tg{font-size:.58rem;color:var(--gold);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.hdr-r{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.langw{display:flex;background:rgba(255,255,255,.08);border-radius:99px;padding:3px;border:1.5px solid rgba(255,255,255,.12);}
+.lbtn{
+  padding:5px 11px;border-radius:99px;background:transparent;
+  color:rgba(255,255,255,.5);font-size:.68rem;font-weight:700;letter-spacing:1px;transition:var(--tr);
+}
+.lbtn.on{background:linear-gradient(135deg,var(--b5),var(--b4));color:#fff;box-shadow:0 2px 10px rgba(46,111,255,.45);}
+.ordbtn{
+  background:linear-gradient(135deg,var(--red),var(--redb));color:#fff;
+  padding:9px 15px;border-radius:99px;font-weight:700;font-size:.75rem;
+  box-shadow:0 4px 14px rgba(212,31,42,.38);transition:var(--tr);
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+}
+.ordbtn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,31,42,.5);}
+.ocnt{
+  background:#fff;color:var(--red);border-radius:50%;
+  width:19px;height:19px;display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:900;
+}
+/* Desktop nav tabs */
+.dtabs{
+  display:none;max-width:1100px;margin:0 auto;padding:0 16px 14px;gap:8px;flex-wrap:wrap;
+}
+@media(min-width:768px){.dtabs{display:flex;}}
+.dtab{
+  padding:7px 18px;border-radius:99px;background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(77,140,255,.2);color:rgba(255,255,255,.65);
+  font-size:.76rem;font-weight:600;transition:var(--tr);
+}
+.dtab:hover,.dtab.on{
+  background:linear-gradient(135deg,var(--b6),var(--b5));
+  border-color:var(--b4);color:#fff;box-shadow:0 4px 14px rgba(46,111,255,.3);
+}
+
+/* ══ PAGES ══ */
+.page{display:none;animation:fadeUp .38s ease;}
+.page.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ HOME ══ */
+.hero{
+  max-width:1100px;margin:0 auto;
+  padding:40px 16px 30px;
+  display:flex;align-items:center;gap:32px;flex-wrap:wrap;
+}
+.hero-l{flex:1;min-width:250px;}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(245,200,66,.12);border:1.5px solid rgba(245,200,66,.35);
+  color:var(--gold);padding:5px 14px;border-radius:99px;
+  font-size:.66rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.hero h1{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(2rem,7vw,3.6rem);line-height:1.05;margin-bottom:5px;
+  background:linear-gradient(135deg,#fff 30%,var(--b3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-family:'Pacifico',cursive;font-size:clamp(.95rem,2.5vw,1.4rem);
+  color:var(--gold);margin-bottom:13px;opacity:.9;
+}
+.hero p{color:rgba(255,255,255,.62);font-size:.88rem;line-height:1.75;margin-bottom:24px;max-width:400px;}
+.hbtns{display:flex;gap:10px;flex-wrap:wrap;}
+.btnm{
+  background:linear-gradient(135deg,var(--b5),var(--b4));color:#fff;
+  padding:13px 24px;border-radius:99px;font-weight:700;font-size:.88rem;
+  box-shadow:0 6px 20px rgba(46,111,255,.42);transition:var(--tr);
+}
+.btnm:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(46,111,255,.55);}
+.btng{
+  background:transparent;color:#fff;
+  border:1.5px solid rgba(255,255,255,.28);
+  padding:13px 24px;border-radius:99px;font-weight:600;font-size:.88rem;transition:var(--tr);
+}
+.btng:hover{background:rgba(255,255,255,.1);}
+.hero-r{flex:1;min-width:230px;max-width:370px;margin:0 auto;}
+.hcard{
+  background:linear-gradient(140deg,rgba(26,79,216,.55),rgba(6,18,64,.8));
+  backdrop-filter:blur(12px);border:1.5px solid rgba(77,140,255,.3);
+  border-radius:24px;padding:22px 18px;
+  box-shadow:var(--shl),0 0 0 1px rgba(255,255,255,.04);
+  animation:fl 4.5s ease-in-out infinite;
+}
+@keyframes fl{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.hgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px;}
+.hitem{
+  background:rgba(255,255,255,.07);border-radius:11px;padding:13px 5px;text-align:center;
+  border:1px solid rgba(255,255,255,.09);transition:var(--tr);
+}
+.hitem:hover{background:rgba(255,255,255,.14);transform:scale(1.06);}
+.hitem .e{font-size:1.75rem;display:block;margin-bottom:3px;}
+.hitem .l{font-size:.55rem;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px;}
+.hct{text-align:center;font-size:.8rem;font-weight:700;color:var(--gold);}
+.hcs{text-align:center;font-size:.63rem;color:rgba(255,255,255,.45);margin-top:3px;}
+
+/* Stats */
+.stats{max-width:1100px;margin:0 auto 44px;padding:0 16px;}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;}
+.sc{
+  background:rgba(255,255,255,.05);border:1px solid rgba(77,140,255,.18);
+  border-radius:13px;padding:15px 13px;
+  display:flex;align-items:center;gap:11px;transition:var(--tr);
+}
+.sc:hover{background:rgba(255,255,255,.09);transform:translateY(-3px);}
+.se{font-size:1.5rem;flex-shrink:0;}
+.sn{font-size:1.1rem;font-weight:800;color:var(--gold);line-height:1;}
+.sl{font-size:.6rem;color:rgba(255,255,255,.45);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+
+/* Home categories */
+.hcats{max-width:1100px;margin:0 auto 50px;padding:0 16px;}
+.stitle{
+  font-size:1.25rem;font-weight:800;margin-bottom:4px;
+  background:linear-gradient(135deg,#fff,var(--b3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.ssub{color:rgba(255,255,255,.4);font-size:.77rem;margin-bottom:18px;}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;}
+.cc{
+  background:rgba(255,255,255,.06);border:1.5px solid rgba(77,140,255,.2);
+  border-radius:15px;padding:15px 7px;text-align:center;transition:var(--tr);cursor:pointer;
+}
+.cc:hover,.cc.sel{
+  background:linear-gradient(135deg,var(--b6),var(--b5));
+  border-color:var(--b4);box-shadow:0 6px 18px rgba(46,111,255,.32);transform:translateY(-4px);
+}
+.cc .e{font-size:1.9rem;display:block;margin-bottom:5px;}
+.cc .n{font-size:.68rem;font-weight:600;color:rgba(255,255,255,.75);}
+
+/* ══ MENU ══ */
+.mwrap{max-width:1100px;margin:0 auto;padding:26px 16px 30px;}
+.fscroll{
+  display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  padding-bottom:4px;margin-bottom:20px;
+}
+.fscroll::-webkit-scrollbar{display:none;}
+.fchip{
+  flex-shrink:0;background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(77,140,255,.22);border-radius:99px;
+  padding:7px 15px;color:rgba(255,255,255,.65);font-size:.73rem;font-weight:600;
+  transition:var(--tr);white-space:nowrap;
+}
+.fchip:hover,.fchip.on{
+  background:linear-gradient(135deg,var(--b6),var(--b5));
+  border-color:var(--b4);color:#fff;box-shadow:0 4px 14px rgba(46,111,255,.3);
+}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:13px;}
+/* Product card */
+.pcard{
+  background:var(--card);border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--sh);transition:var(--tr);border:2px solid transparent;
+}
+.pcard:hover{
+  transform:translateY(-6px);box-shadow:0 18px 44px rgba(10,31,110,.3);
+  border-color:rgba(46,111,255,.3);
+}
+.pcard.hid{display:none;}
+.pimg{
+  height:125px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.pimg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1;}
+.pem{font-size:3.4rem;position:relative;z-index:2;transition:var(--tr);}
+.pcard:hover .pem{transform:scale(1.12) rotate(-5deg);}
+.pbadge{
+  position:absolute;top:7px;right:7px;z-index:3;
+  font-size:.57rem;font-weight:800;padding:3px 8px;border-radius:99px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.bf{background:var(--green);color:#fff;}
+.bp{background:var(--red);color:#fff;}
+.pbody{padding:11px 10px;}
+.pname{font-size:.82rem;font-weight:700;color:var(--td);line-height:1.25;margin-bottom:2px;}
+.punit{font-size:.63rem;color:var(--tl);margin-bottom:8px;}
+.pprice{font-size:.95rem;font-weight:800;color:var(--b6);}
+.pper{font-size:.58rem;color:var(--tl);margin-bottom:8px;}
+.qrow{display:flex;align-items:center;gap:5px;margin-bottom:7px;}
+.qbtn{
+  width:28px;height:28px;border-radius:50%;background:var(--b6);color:#fff;
+  font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;
+  transition:var(--tr);flex-shrink:0;
+}
+.qbtn:hover{background:var(--b4);transform:scale(1.1);}
+.qinp{
+  flex:1;height:28px;text-align:center;border:1.5px solid #dde4f8;
+  border-radius:7px;font-size:.8rem;font-weight:700;color:var(--td);font-family:inherit;
+  max-width:50px;
+}
+.qinp:focus{border-color:var(--b4);outline:none;}
+.psubt{font-size:.7rem;color:var(--b6);font-weight:700;text-align:center;min-height:16px;margin-bottom:6px;}
+.addbtns{
+  width:100%;padding:8px 0;border-radius:9px;font-size:.7rem;font-weight:700;
+  background:linear-gradient(135deg,var(--b6),var(--b4));color:#fff;
+  box-shadow:0 4px 12px rgba(46,111,255,.3);transition:var(--tr);
+}
+.addbtns:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(46,111,255,.45);}
+.addbtns.aded{background:linear-gradient(135deg,var(--green),#28d97e);}
+
+/* Float bar */
+.floatbar{
+  position:fixed;bottom:82px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--b6),var(--b4));color:#fff;
+  padding:13px 24px;border-radius:99px;font-weight:700;font-size:.88rem;
+  box-shadow:0 8px 28px rgba(46,111,255,.5);
+  display:none;align-items:center;gap:10px;z-index:80;
+  border:2px solid rgba(255,255,255,.2);cursor:pointer;transition:var(--tr);
+}
+.floatbar:hover{transform:translateX(-50%) translateY(-3px);}
+.floatbar.show{display:flex;}
+.ftot{background:rgba(255,255,255,.2);padding:4px 12px;border-radius:99px;font-size:.77rem;font-weight:800;}
+@media(min-width:768px){.floatbar{bottom:24px;}}
+
+/* ══ ORDER PAGE ══ */
+.owrap{max-width:620px;margin:0 auto;padding:26px 16px 40px;}
+.obox{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:var(--shl);}
+.ohdr{
+  background:linear-gradient(135deg,var(--b7),var(--b6));
+  padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.1);
+}
+.ohdr h2{color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:3px;}
+.ohdr p{color:rgba(255,255,255,.6);font-size:.73rem;}
+.obody{padding:20px 18px;}
+/* Items list */
+.oirow{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid #edf0fc;
+}
+.oirow:last-child{border:none;}
+.oiname{font-size:.81rem;font-weight:600;color:var(--td);}
+.oiqty{font-size:.7rem;color:var(--tm);}
+.oiprice{font-size:.87rem;font-weight:700;color:var(--b6);}
+.oirem{background:none;border:none;color:#ccc;font-size:1rem;padding:2px 6px;border-radius:4px;transition:var(--tr);}
+.oirem:hover{color:var(--red);background:#fff0f0;}
+/* Totals */
+.totbox{background:#f4f7ff;border-radius:13px;padding:15px;margin-bottom:18px;}
+.trow{display:flex;justify-content:space-between;padding:5px 0;font-size:.81rem;color:var(--tm);}
+.trow.bold{border-top:2px solid #dde4f8;margin-top:7px;padding-top:9px;font-size:.98rem;font-weight:800;color:var(--td);}
+.freenote{
+  background:rgba(28,184,110,.1);border:1.5px solid rgba(28,184,110,.3);
+  color:#0e8a4a;padding:7px 13px;border-radius:9px;font-size:.71rem;font-weight:600;
+  margin-bottom:15px;display:none;
+}
+.freenote.show{display:block;}
+/* Form */
+.fg{margin-bottom:13px;}
+.fl{display:block;font-size:.73rem;font-weight:700;color:var(--td);margin-bottom:4px;}
+.fi{
+  width:100%;padding:10px 13px;border:1.5px solid #dde4f8;
+  border-radius:10px;font-size:.84rem;font-family:inherit;color:var(--td);
+  background:#fff;transition:var(--tr);
+}
+.fi:focus{border-color:var(--b4);box-shadow:0 0 0 3px rgba(46,111,255,.1);outline:none;}
+.fta{resize:vertical;min-height:75px;}
+.locbtn{
+  width:100%;padding:10px;border:1.5px dashed rgba(46,111,255,.35);
+  border-radius:10px;background:rgba(46,111,255,.05);color:var(--b6);
+  font-weight:600;font-size:.81rem;transition:var(--tr);
+  display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:13px;
+}
+.locbtn:hover{background:rgba(46,111,255,.12);}
+.locst{font-size:.68rem;color:var(--green);font-weight:600;text-align:center;margin-bottom:10px;display:none;}
+.submbtn{
+  width:100%;padding:14px;border-radius:13px;
+  background:linear-gradient(135deg,#25D366,#1ebc58);color:#fff;
+  font-size:.98rem;font-weight:800;
+  box-shadow:0 6px 22px rgba(37,211,102,.38);transition:var(--tr);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.submbtn:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(37,211,102,.5);}
+/* Empty order */
+.eorder{text-align:center;padding:40px 20px;}
+.eorder .ee{font-size:3rem;display:block;margin-bottom:12px;}
+.eorder p{color:var(--tm);font-size:.87rem;margin-bottom:18px;}
+
+/* ══ ABOUT ══ */
+.awrap{max-width:660px;margin:0 auto;padding:26px 16px 40px;}
+.abox{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:var(--shl);}
+.aban{
+  height:130px;background:linear-gradient(135deg,var(--b7),var(--b6));
+  display:flex;align-items:center;justify-content:center;font-size:3.8rem;
+}
+.acont{padding:22px 20px;}
+.acont h2{font-size:1.25rem;font-weight:800;color:var(--td);margin-bottom:7px;}
+.acont p{color:var(--tm);font-size:.84rem;line-height:1.7;margin-bottom:15px;}
+.irow{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #edf0fc;font-size:.81rem;color:var(--td);}
+.irow:last-of-type{border:none;}
+.ie{font-size:1.15rem;width:26px;text-align:center;flex-shrink:0;margin-top:1px;}
+
+/* ══ BOTTOM NAV ══ */
+.bnav{
+  position:fixed;bottom:0;left:0;right:0;z-index:85;
+  background:rgba(6,18,64,.97);backdrop-filter:blur(20px);
+  border-top:1.5px solid rgba(77,140,255,.2);
+  display:flex;
+}
+@media(min-width:768px){.bnav{display:none;}}
+.nitem{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:9px 4px 11px;gap:3px;background:none;border:none;
+  color:rgba(255,255,255,.4);font-family:inherit;font-size:.57rem;font-weight:600;
+  letter-spacing:.5px;text-transform:uppercase;transition:var(--tr);position:relative;
+}
+.nitem .ne{font-size:1.25rem;transition:var(--tr);}
+.nitem:hover,.nitem.on{color:var(--b3);}
+.nitem.on .ne{transform:translateY(-3px);}
+.nitem.on::after{
+  content:'';position:absolute;bottom:0;left:25%;right:25%;
+  height:2.5px;background:var(--b4);border-radius:99px;
+}
+
+/* ══ TOAST ══ */
+.toast{
+  position:fixed;top:78px;right:14px;z-index:999;
+  background:#0d2070;border:1.5px solid rgba(77,140,255,.35);
+  color:#fff;padding:10px 16px;border-radius:11px;
+  font-size:.77rem;font-weight:600;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  transform:translateX(120%);transition:transform .3s;max-width:250px;
+}
+.toast.show{transform:translateX(0);}
+body.ur .toast{right:auto;left:14px;transform:translateX(-120%);}
+body.ur .toast.show{transform:translateX(0);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:480px){
+  .hero{padding:28px 14px 22px;gap:22px;}
+  .hero h1{font-size:1.9rem;}
+  .hero-r{max-width:100%;}
+  .pgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+  .cg{grid-template-columns:repeat(auto-fill,minmax(78px,1fr));}
+}
+</style>
+</head>
+<body>
+
+<!-- BG -->
+<div class="bg"></div>
+<div class="orb1"></div>
+<div class="orb2"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ════════ HEADER ════════ -->
+<header>
+  <div class="hdr">
+    <button class="backbtn" id="backbtn" onclick="goBack()">&#8592;</button>
+    <a class="logo" href="#" onclick="nav('home');return false;">
+      <div class="logo-ico">🐄</div>
+      <div>
+        <div class="logo-nm">Dilawar Gujjar Dairy</div>
+        <div class="logo-tg" data-en="Pure &amp; Fresh Daily · Dev by MR BALOCH" data-ur="روزانہ خالص تازہ">Pure &amp; Fresh Daily · Dev by MR BALOCH</div>
+      </div>
+    </a>
+    <div class="hdr-r">
+      <div class="langw">
+        <button class="lbtn on" id="bEN" onclick="setLang('en')">EN</button>
+        <button class="lbtn" id="bUR" onclick="setLang('ur')">اردو</button>
+      </div>
+      <button class="ordbtn" onclick="nav('order')">
+        <span data-en="🛒 Order" data-ur="آرڈر 🛒">🛒 Order</span>
+        <span class="ocnt" id="ocnt">0</span>
+      </button>
+    </div>
+  </div>
+  <div class="dtabs" id="dtabs">
+    <button class="dtab on" data-page="home" onclick="nav('home')" data-en="🏠 Home" data-ur="🏠 ہوم">🏠 Home</button>
+    <button class="dtab" data-page="menu" onclick="nav('menu')" data-en="🥛 Menu" data-ur="🥛 مینیو">🥛 Menu</button>
+    <button class="dtab" data-page="order" onclick="nav('order')" data-en="📋 Order" data-ur="📋 آرڈر">📋 Order</button>
+    <button class="dtab" data-page="about" onclick="nav('about')" data-en="ℹ️ About" data-ur="ℹ️ ہمارے بارے">ℹ️ About</button>
+  </div>
+</header>
+
+<!-- ════════ SITE ════════ -->
+<div class="site">
+
+<!-- ══ HOME PAGE ══ -->
+<div class="page on" id="p-home">
+  <section class="hero">
+    <div class="hero-l">
+      <div class="badge">⭐ <span data-en="Karachi's Finest Dairy" data-ur="کراچی کی بہترین ڈیری">Karachi's Finest Dairy</span></div>
+      <h1 data-en="Dilawar Gujjar Dairy" data-ur="دلاور گوجر ڈیری">Dilawar Gujjar Dairy</h1>
+      <div class="hero-sub" data-en="Pure. Fresh. Delivered." data-ur="خالص۔ تازہ۔ ڈیلیوری۔">Pure. Fresh. Delivered.</div>
+      <p data-en="Farm-fresh milk, creamy yogurt, golden desi ghee and more — delivered straight to your door. Order on WhatsApp in seconds!" data-ur="فارم سے تازہ دودھ، کریمی دہی، سنہری دیسی گھی — آپ کے دروازے پر۔ سیکنڈوں میں واٹس ایپ پر آرڈر کریں!">Farm-fresh milk, creamy yogurt, golden desi ghee and more — delivered straight to your door. Order on WhatsApp in seconds!</p>
+      <div class="hbtns">
+        <button class="btnm" onclick="nav('menu')" data-en="🥛 View Full Menu" data-ur="🥛 مکمل مینیو دیکھیں">🥛 View Full Menu</button>
+        <button class="btng" onclick="nav('about')" data-en="ℹ️ About Us" data-ur="ℹ️ ہمارے بارے میں">ℹ️ About Us</button>
+      </div>
+    </div>
+    <div class="hero-r">
+      <div class="hcard">
+        <div class="hgrid">
+          <div class="hitem"><span class="e">🥛</span><span class="l" data-en="Milk" data-ur="دودھ">Milk</span></div>
+          <div class="hitem"><span class="e">🫙</span><span class="l" data-en="Yogurt" data-ur="دہی">Yogurt</span></div>
+          <div class="hitem"><span class="e">🥤</span><span class="l" data-en="Lassi" data-ur="لسی">Lassi</span></div>
+          <div class="hitem"><span class="e">🧈</span><span class="l" data-en="Ghee" data-ur="گھی">Ghee</span></div>
+          <div class="hitem"><span class="e">🧀</span><span class="l" data-en="Butter" data-ur="مکھن">Butter</span></div>
+          <div class="hitem"><span class="e">🥚</span><span class="l" data-en="Eggs" data-ur="انڈے">Eggs</span></div>
+        </div>
+        <div class="hct" data-en="🕐 Fresh Every Morning" data-ur="🕐 ہر صبح تازہ">🕐 Fresh Every Morning</div>
+        <div class="hcs" data-en="Order by 10 PM — next morning delivery" data-ur="رات 10 بجے تک آرڈر — صبح ڈیلیوری">Order by 10 PM — next morning delivery</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="sg">
+      <div class="sc"><span class="se">🐄</span><div><div class="sn">100%</div><div class="sl" data-en="Pure Milk" data-ur="خالص دودھ">Pure Milk</div></div></div>
+      <div class="sc"><span class="se">🌅</span><div><div class="sn" data-en="Daily" data-ur="روزانہ">Daily</div><div class="sl" data-en="Fresh Supply" data-ur="تازہ سپلائی">Fresh Supply</div></div></div>
+      <div class="sc"><span class="se">🚚</span><div><div class="sn" data-en="Fast" data-ur="تیز">Fast</div><div class="sl" data-en="Delivery" data-ur="ڈیلیوری">Delivery</div></div></div>
+      <div class="sc"><span class="se">🎁</span><div><div class="sn" data-en="FREE" data-ur="مفت">FREE</div><div class="sl" data-en="Above Rs.10k" data-ur="10 ہزار سے اوپر">Above Rs.10k</div></div></div>
+    </div>
+  </section>
+
+  <!-- Home categories -->
+  <section class="hcats">
+    <div class="stitle" data-en="Browse by Category" data-ur="کیٹگری سے براؤز کریں">Browse by Category</div>
+    <div class="ssub" data-en="Tap to explore our fresh products" data-ur="تازہ مصنوعات دیکھنے کے لیے ٹیپ کریں">Tap to explore our fresh products</div>
+    <div class="cg" id="homecats"></div>
+  </section>
+</div>
+
+<!-- ══ MENU PAGE ══ -->
+<div class="page" id="p-menu">
+  <div class="mwrap">
+    <div class="stitle" data-en="Our Menu" data-ur="ہمارا مینیو">Our Menu</div>
+    <div class="ssub" data-en="Select quantity — total price calculates automatically" data-ur="مقدار منتخب کریں — کل قیمت خود بخود حساب ہوگی">Select quantity — total price calculates automatically</div>
+    <div class="fscroll" id="filterbar"></div>
+    <div class="pgrid" id="prodgrid"></div>
+  </div>
+  <button class="floatbar" id="floatbar" onclick="nav('order')">
+    <span data-en="📋 Proceed to Order" data-ur="📋 آرڈر پر جائیں">📋 Proceed to Order</span>
+    <span class="ftot" id="ftot">Rs. 0</span>
+  </button>
+</div>
+
+<!-- ══ ORDER PAGE ══ -->
+<div class="page" id="p-order">
+  <div class="owrap">
+    <div class="eorder" id="emptyord">
+      <span class="ee">🛒</span>
+      <p data-en="Your order is empty. Go to menu to add items!" data-ur="آرڈر خالی ہے۔ مینیو میں جا کر آئٹم شامل کریں!">Your order is empty. Go to menu to add items!</p>
+      <button class="btnm" onclick="nav('menu')" data-en="Browse Menu →" data-ur="مینیو دیکھیں ←">Browse Menu →</button>
+    </div>
+    <div id="ordform" style="display:none;">
+      <div class="obox">
+        <div class="ohdr">
+          <h2 data-en="📋 Your Order" data-ur="📋 آپ کا آرڈر">📋 Your Order</h2>
+          <p data-en="Review items, fill details, send on WhatsApp" data-ur="آئٹم چیک کریں، تفصیل بھریں، واٹس ایپ پر بھیجیں">Review items, fill details, send on WhatsApp</p>
+        </div>
+        <div class="obody">
+          <div id="oitemslist"></div>
+          <div class="totbox">
+            <div class="trow"><span data-en="Subtotal" data-ur="ذیلی کل">Subtotal</span><span id="tsubt">Rs. 0</span></div>
+            <div class="trow"><span data-en="🚚 Delivery" data-ur="🚚 ڈیلیوری">🚚 Delivery</span><span id="tdel">Rs. 250</span></div>
+            <div class="trow bold"><span data-en="Total Payable" data-ur="کل ادائیگی">Total Payable</span><span id="ttot">Rs. 250</span></div>
+          </div>
+          <div class="freenote" id="freenote">🎉 <span data-en="FREE delivery on this order!" data-ur="اس آرڈر پر مفت ڈیلیوری!">FREE delivery on this order!</span></div>
+
+          <div class="fg">
+            <label class="fl" data-en="👤 Your Name *" data-ur="👤 آپ کا نام *">👤 Your Name *</label>
+            <input class="fi" type="text" id="cname" placeholder="e.g. Ahmed Khan" data-pen="e.g. Ahmed Khan" data-pur="مثلاً احمد خان"/>
+          </div>
+          <div class="fg">
+            <label class="fl" data-en="📱 Phone Number *" data-ur="📱 فون نمبر *">📱 Phone Number *</label>
+            <input class="fi" type="tel" id="cphone" placeholder="e.g. 0300-1234567" data-pen="e.g. 0300-1234567" data-pur="مثلاً 0300-1234567"/>
+          </div>
+          <div class="fg">
+            <label class="fl" data-en="🏠 Delivery Address *" data-ur="🏠 ڈیلیوری پتہ *">🏠 Delivery Address *</label>
+            <textarea class="fi fta" id="caddr" placeholder="House No, Street, Area, City..." data-pen="House No, Street, Area, City..." data-pur="گھر نمبر، گلی، علاقہ، شہر..."></textarea>
+          </div>
+          <div class="fg">
+            <label class="fl" data-en="📝 Special Note (optional)" data-ur="📝 خصوصی نوٹ (اختیاری)">📝 Special Note (optional)</label>
+            <input class="fi" type="text" id="cnote" placeholder="e.g. Deliver before 8 AM" data-pen="e.g. Deliver before 8 AM" data-pur="مثلاً صبح 8 بجے سے پہلے"/>
+          </div>
+
+          <button class="locbtn" onclick="getloc()" id="locbtn">
+            <span>📍</span>
+            <span id="locbtntxt" data-en="Share My Live Location" data-ur="میری لائیو لوکیشن شیئر کریں">Share My Live Location</span>
+          </button>
+          <div class="locst" id="locst"></div>
+
+          <button class="submbtn" onclick="sendOrder()">
+            <span style="font-size:1.3rem;">📲</span>
+            <span data-en="Send Order on WhatsApp" data-ur="واٹس ایپ پر آرڈر بھیجیں">Send Order on WhatsApp</span>
+          </button>
+          <p style="text-align:center;font-size:.67rem;color:var(--tl);margin-top:11px;" data-en="Order confirmed via WhatsApp. We'll call to confirm delivery time." data-ur="واٹس ایپ سے آرڈر ہوگا۔ ڈیلیوری وقت تصدیق کے لیے کال ملے گی۔">Order confirmed via WhatsApp. We'll call to confirm delivery time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ABOUT PAGE ══ -->
+<div class="page" id="p-about">
+  <div class="awrap">
+    <div class="abox">
+      <div class="aban">🐄</div>
+      <div class="acont">
+        <h2 data-en="Dilawar Gujjar Dairy" data-ur="دلاور گوجر ڈیری">Dilawar Gujjar Dairy</h2>
+        <p data-en="We provide 100% pure, fresh dairy products directly from our farm to your doorstep every morning. No preservatives, no mixing — just real, wholesome goodness your family deserves." data-ur="ہم اپنے فارم سے آپ کے گھر تک 100% خالص، تازہ ڈیری مصنوعات فراہم کرتے ہیں۔ کوئی محافظ نہیں، کوئی ملاوٹ نہیں — صرف اصلی خالص معیار۔">We provide 100% pure, fresh dairy products directly from our farm to your doorstep every morning. No preservatives, no mixing — just real, wholesome goodness your family deserves.</p>
+        <div class="irow"><span class="ie">📞</span><span data-en="WhatsApp Orders: 0300-1234567" data-ur="واٹس ایپ آرڈر: 0300-1234567">WhatsApp Orders: 0300-1234567</span></div>
+        <div class="irow"><span class="ie">🕐</span><span data-en="Order Time: 6 AM – 10 PM daily" data-ur="آرڈر وقت: صبح 6 – رات 10 بجے">Order Time: 6 AM – 10 PM daily</span></div>
+        <div class="irow"><span class="ie">🚚</span><span data-en="Delivery Charge: Rs. 250 (Free above Rs. 10,000)" data-ur="ڈیلیوری چارج: Rs. 250 (Rs. 10,000 سے اوپر مفت)">Delivery Charge: Rs. 250 (Free above Rs. 10,000)</span></div>
+        <div class="irow"><span class="ie">📦</span><span data-en="Minimum Order: 2 units per dairy item" data-ur="کم سے کم آرڈر: ڈیری آئٹم میں 2 یونٹ">Minimum Order: 2 units per dairy item</span></div>
+        <div class="irow"><span class="ie">📍</span><span data-en="Serving local areas — large orders welcome!" data-ur="مقامی علاقوں میں سروس — بڑے آرڈر خوش آمدید!">Serving local areas — large orders welcome!</span></div>
+        <div style="margin-top:20px;">
+          <button class="btnm" style="width:100%;" onclick="nav('menu')" data-en="🥛 Order Now" data-ur="🥛 ابھی آرڈر کریں">🥛 Order Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /site -->
+
+<!-- ════════ BOTTOM NAV ════════ -->
+<nav class="bnav" id="bnav">
+  <button class="nitem on" data-page="home" onclick="nav('home')">
+    <span class="ne">🏠</span><span data-en="Home" data-ur="ہوم">Home</span>
+  </button>
+  <button class="nitem" data-page="menu" onclick="nav('menu')">
+    <span class="ne">🥛</span><span data-en="Menu" data-ur="مینیو">Menu</span>
+  </button>
+  <button class="nitem" data-page="order" onclick="nav('order')">
+    <span class="ne">📋</span><span data-en="Order" data-ur="آرڈر">Order</span>
+  </button>
+  <button class="nitem" data-page="about" onclick="nav('about')">
+    <span class="ne">ℹ️</span><span data-en="About" data-ur="ہمارے بارے">About</span>
+  </button>
+</nav>
+
+<script>
+/* ══════════════════════════════════════════
+   CONFIG — EDIT THESE
+══════════════════════════════════════════ */
+const WA = "923112681751"; // WHATSAPP_NUMBER ← Replace with your actual number
+const SHOP = "Dilawar Gujjar Dairy";
+const FREE_DEL = 10000;
+const DEL_CHARGE = 250;
+
+/* ══ CATEGORIES ══ */
+const CATS = [
+  {id:"all",   en:"All Items",      ur:"سب آئٹم",   em:"🛒"},
+  {id:"dairy", en:"Dairy",          ur:"ڈیری",       em:"🥛"},
+  {id:"ghee",  en:"Ghee & Butter",  ur:"گھی / مکھن", em:"🧈"},
+  {id:"bakery",en:"Bakery",         ur:"بیکری",      em:"🍞"},
+  {id:"drinks",en:"Drinks",         ur:"مشروبات",    em:"🧃"},
+  {id:"eggs",  en:"Eggs",           ur:"انڈے",       em:"🥚"},
+];
+
+/* ══ PRODUCTS ══
+   📸 PHOTO لگانے کے لیے:  img:"images/milk.jpg"  add کریں product میں
+   🎬 VIDEO لگانے کے لیے:  vid:"images/milk.mp4"  add کریں (video ہو تو photo چھپ جائے گی)
+   ✅ جب photo یا video ہو تو emoji خود بخود چھپ جائے گا
+   📁 GitHub پر: images/ فولڈر بنائیں، نیچے دیے نام رکھیں
+*/
+const PRODS = [
+  // ─ DAIRY ─
+  {id:"milk",  cat:"dairy", em:"🥛", badge:"fresh",
+   img:"", vid:"",   // → images/milk.jpg  یا  images/milk.mp4
+   en:{name:"Fresh Milk",        detail:"Pure desi cow milk"},
+   ur:{name:"تازہ دودھ",         detail:"خالص دیسی گائے کا دودھ"},
+   price:240, unit:"kg",    ulen:"per kg",    ulur:"فی کلو",   min:1,
+   bg:"linear-gradient(135deg,#e8f4ff,#b5d5ff)"},
+
+  {id:"dahi",  cat:"dairy", em:"🫙", badge:"fresh",
+   img:"", vid:"",   // → images/dahi.jpg  یا  images/dahi.mp4
+   en:{name:"Dahi (Yogurt)",     detail:"Thick creamy yogurt"},
+   ur:{name:"دہی",               detail:"موٹا کریمی دہی"},
+   price:400, unit:"kg",    ulen:"per kg",    ulur:"فی کلو",   min:1,
+   bg:"linear-gradient(135deg,#fff5e8,#ffd9a0)"},
+
+  {id:"lassi", cat:"dairy", em:"🥤", badge:"pop",
+   img:"", vid:"",   // → images/lassi.jpg  یا  images/lassi.mp4
+   en:{name:"Lassi",             detail:"Fresh sweet lassi glass"},
+   ur:{name:"لسی",               detail:"تازہ میٹھی لسی کا گلاس"},
+   price:210, unit:"glass",  ulen:"per glass", ulur:"فی گلاس", min:2,
+   bg:"linear-gradient(135deg,#e8fff2,#a0ffd0)"},
+
+  {id:"bottle",cat:"dairy", em:"🍼", badge:"fresh",
+   img:"", vid:"",   // → images/bottle.jpg  یا  images/bottle.mp4
+   en:{name:"Milk Bottle",       detail:"Sealed 1L milk bottle"},
+   ur:{name:"دودھ کی بوتل",      detail:"سیل شدہ 1 لیٹر بوتل"},
+   price:200, unit:"bottle", ulen:"per bottle",ulur:"فی بوتل", min:2,
+   bg:"linear-gradient(135deg,#eef3ff,#c8d8ff)"},
+
+  // ─ GHEE & BUTTER ─
+  {id:"ghee",  cat:"ghee",  em:"🧈", badge:"pop",
+   img:"", vid:"",   // → images/ghee.jpg  یا  images/ghee.mp4
+   en:{name:"Desi Ghee",         detail:"Pure homemade desi ghee"},
+   ur:{name:"دیسی گھی",          detail:"خالص گھر کا دیسی گھی"},
+   price:2800,unit:"kg",    ulen:"per kg",    ulur:"فی کلو",   min:0.5,
+   bg:"linear-gradient(135deg,#fff9e0,#ffe89a)"},
+
+  {id:"butter",cat:"ghee",  em:"🟡", badge:"",
+   img:"", vid:"",   // → images/butter.jpg  یا  images/butter.mp4
+   en:{name:"White Butter (Makhan)", detail:"Fresh white butter"},
+   ur:{name:"سفید مکھن",          detail:"تازہ سفید مکھن"},
+   price:600, unit:"250g",  ulen:"per 250g",  ulur:"250 گرام", min:1,
+   bg:"linear-gradient(135deg,#fffff0,#fff5b0)"},
+
+  // ─ BAKERY ─
+  {id:"bread", cat:"bakery",em:"🍞", badge:"",
+   img:"", vid:"",   // → images/bread.jpg  یا  images/bread.mp4
+   en:{name:"Double Roti",       detail:"Fresh baked bread loaf"},
+   ur:{name:"ڈبل روٹی",          detail:"تازہ پکا ہوا ڈبل روٹی"},
+   price:80,  unit:"loaf",  ulen:"per loaf",  ulur:"فی روٹی", min:1,
+   bg:"linear-gradient(135deg,#fff0e0,#ffd6a0)"},
+
+  {id:"pappi", cat:"bakery",em:"🥐", badge:"pop",
+   img:"", vid:"",   // → images/pappi.jpg  یا  images/pappi.mp4
+   en:{name:"Pappi",             detail:"Crispy puff pastry"},
+   ur:{name:"پاپی",              detail:"کرسپی پف پیسٹری"},
+   price:30,  unit:"piece", ulen:"per piece", ulur:"فی عدد",  min:2,
+   bg:"linear-gradient(135deg,#fff5e8,#ffddaa)"},
+
+  {id:"biscuit",cat:"bakery",em:"🍪",badge:"",
+   img:"", vid:"",   // → images/biscuit.jpg  یا  images/biscuit.mp4
+   en:{name:"Biscuits / Crackers",detail:"Assorted biscuit pack"},
+   ur:{name:"بسکٹ / کریکرز",     detail:"مکس بسکٹ پیکٹ"},
+   price:150, unit:"pack",  ulen:"per pack",  ulur:"فی پیکٹ", min:1,
+   bg:"linear-gradient(135deg,#fdf0e0,#fad8b0)"},
+
+  {id:"rusk",  cat:"bakery",em:"🧁", badge:"",
+   img:"", vid:"",   // → images/rusk.jpg  یا  images/rusk.mp4
+   en:{name:"Cake Rusk",         detail:"Sweet toasted cake rusk"},
+   ur:{name:"کیک رسک",           detail:"میٹھا کیک رسک"},
+   price:120, unit:"pack",  ulen:"per pack",  ulur:"فی پیکٹ", min:1,
+   bg:"linear-gradient(135deg,#fff0f8,#ffc8e8)"},
+
+  // ─ DRINKS ─
+  {id:"juice", cat:"drinks",em:"🧃", badge:"",
+   img:"", vid:"",   // → images/juice.jpg  یا  images/juice.mp4
+   en:{name:"Fresh Juice",       detail:"Seasonal fresh juice bottle"},
+   ur:{name:"تازہ جوس",          detail:"موسمی تازہ جوس"},
+   price:150, unit:"bottle", ulen:"per bottle",ulur:"فی بوتل", min:1,
+   bg:"linear-gradient(135deg,#e8fff0,#b0ffc8)"},
+
+  {id:"cold",  cat:"drinks",em:"🥤", badge:"",
+   img:"", vid:"",   // → images/cold.jpg  یا  images/cold.mp4
+   en:{name:"Cold Drink",        detail:"Chilled cold drink bottle"},
+   ur:{name:"کولڈ ڈرنک",         detail:"ٹھنڈی کولڈ ڈرنک"},
+   price:100, unit:"bottle", ulen:"per bottle",ulur:"فی بوتل", min:1,
+   bg:"linear-gradient(135deg,#e0f8ff,#a0e8ff)"},
+
+  // ─ EGGS ─
+  {id:"eggs",  cat:"eggs",  em:"🥚", badge:"fresh",
+   img:"", vid:"",   // → images/eggs.jpg  یا  images/eggs.mp4
+   en:{name:"Farm Eggs",         detail:"Fresh farm eggs"},
+   ur:{name:"تازہ انڈے",         detail:"فارم کے تازہ انڈے"},
+   price:360, unit:"dozen", ulen:"per dozen", ulur:"فی درجن", min:1,
+   bg:"linear-gradient(135deg,#fffce0,#ffeea0)"},
+];
+
+/* ══ STATE ══ */
+let LANG = "en";
+let ORDER = {}; // {id: qty}
+let LOC = null;
+let CUR_PAGE = "home";
+let HIST = ["home"];
+let ACT_FILTER = "all";
+
+/* ══ LANGUAGE ══ */
+function setLang(l){
+  LANG = l;
+  document.documentElement.lang = l;
+  document.documentElement.dir = l==="ur"?"rtl":"ltr";
+  document.body.classList.toggle("ur", l==="ur");
+  document.getElementById("bEN").classList.toggle("on",l==="en");
+  document.getElementById("bUR").classList.toggle("on",l==="ur");
+  // Update all static labels
+  document.querySelectorAll("[data-en]").forEach(el=>{
+    const t = el.getAttribute("data-"+l);
+    if(t) el.textContent = t;
+  });
+  // Update placeholders
+  document.querySelectorAll("[data-pen]").forEach(el=>{
+    el.placeholder = el.getAttribute(l==="ur"?"data-pur":"data-pen");
+  });
+  // Re-render dynamic parts
+  renderHomeCats();
+  renderFilter();
+  renderProds(ACT_FILTER);
+  renderOrder();
+}
+
+/* ══ NAVIGATION ══ */
+function nav(id){
+  if(id !== CUR_PAGE) HIST.push(id);
+  CUR_PAGE = id;
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));
+  const pg = document.getElementById("p-"+id);
+  if(pg) pg.classList.add("on");
+  // Back button
+  const bb = document.getElementById("backbtn");
+  bb.classList.toggle("vis", HIST.length>1 && id!=="home");
+  // Nav items
+  document.querySelectorAll(".nitem,.dtab").forEach(b=>{
+    b.classList.toggle("on", b.getAttribute("data-page")===id);
+  });
+  if(id==="order") renderOrder();
+  if(id==="menu"){ renderProds(ACT_FILTER); }
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function goBack(){
+  if(HIST.length>1){ HIST.pop(); nav(HIST[HIST.length-1]); }
+}
+
+/* ══ HOME CATS ══ */
+function renderHomeCats(){
+  const g = document.getElementById("homecats");
+  if(!g) return;
+  g.innerHTML = CATS.filter(c=>c.id!=="all").map(c=>`
+    <div class="cc" onclick="filterGo('${c.id}')">
+      <span class="e">${c.em}</span>
+      <div class="n">${c[LANG]}</div>
+    </div>`).join("");
+}
+function filterGo(id){
+  ACT_FILTER = id;
+  nav("menu");
+  setTimeout(()=>{renderFilter();renderProds(id);},50);
+}
+
+/* ══ FILTER BAR ══ */
+function renderFilter(){
+  const b = document.getElementById("filterbar");
+  if(!b) return;
+  b.innerHTML = CATS.map(c=>`
+    <button class="fchip ${ACT_FILTER===c.id?"on":""}" onclick="doFilter('${c.id}')">
+      ${c.em} ${c[LANG]}
+    </button>`).join("");
+}
+function doFilter(id){
+  ACT_FILTER = id;
+  renderFilter();
+  renderProds(id);
+}
+
+/* ══ PRODUCTS ══ */
+function renderProds(cat){
+  const g = document.getElementById("prodgrid");
+  if(!g) return;
+  const list = cat==="all" ? PRODS : PRODS.filter(p=>p.cat===cat);
+  g.innerHTML = list.map(p=>{
+    const qty = ORDER[p.id] !== undefined ? ORDER[p.id] : p.min;
+    const isAdded = ORDER[p.id] !== undefined;
+    const nm = p[LANG].name;
+    const dt = p[LANG].detail;
+    const ul = LANG==="ur" ? p.ulur : p.ulen;
+    const badgeTxt = p.badge==="fresh"
+      ? (LANG==="ur"?"تازہ":"Fresh")
+      : p.badge==="pop"?(LANG==="ur"?"مشہور":"Popular"):"";
+    const subt = isAdded ? `Rs. ${(ORDER[p.id]*p.price).toLocaleString()}` : "";
+    const btnTxt = isAdded
+      ? (LANG==="ur"?"✓ شامل ہے":"✓ Added")
+      : (LANG==="ur"?"آرڈر میں شامل کریں":"Add to Order");
+    const hasMedia = p.img || p.vid;
+    return `
+    <div class="pcard" id="card-${p.id}">
+      <div class="pimg" style="background:${p.bg}">
+        ${p.vid ? `<video src="${p.vid}" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:var(--r) var(--r) 0 0;" onerror="this.style.display='none'"></video>` : ""}
+        ${p.img && !p.vid ? `<img src="${p.img}" alt="${nm}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:var(--r) var(--r) 0 0;" onerror="this.style.display='none'">` : ""}
+        <span class="pem" style="${hasMedia?"opacity:0;pointer-events:none;":""}">${p.em}</span>
+        ${badgeTxt ? `<span class="pbadge ${p.badge==="fresh"?"bf":"bp"}">${badgeTxt}</span>` : ""}
+      </div>
+      <div class="pbody">
+        <div class="pname">${nm}</div>
+        <div class="punit">${dt}</div>
+        <div class="pprice">Rs. ${p.price.toLocaleString()}</div>
+        <div class="pper">${ul}</div>
+        <div class="qrow">
+          <button class="qbtn" onclick="chQty('${p.id}',-1)">−</button>
+          <input class="qinp" type="number" id="qi-${p.id}" value="${qty}" min="${p.min}" step="${p.unit==='kg'&&p.min<1?0.5:1}" onchange="setQty('${p.id}',this.value)"/>
+          <button class="qbtn" onclick="chQty('${p.id}',1)">+</button>
+        </div>
+        <div class="psubt" id="ps-${p.id}">${subt}</div>
+        <button class="addbtns ${isAdded?"aded":""}" id="ab-${p.id}" onclick="addOrder('${p.id}')">
+          ${btnTxt}
+        </button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function chQty(id, d){
+  const p = PRODS.find(x=>x.id===id);
+  const inp = document.getElementById("qi-"+id);
+  if(!p||!inp) return;
+  const step = (p.unit==="kg"&&p.min<1) ? 0.5 : 1;
+  let v = parseFloat(inp.value) + d*step;
+  if(v < p.min) v = p.min;
+  inp.value = v;
+  if(ORDER[id] !== undefined){ ORDER[id]=v; refreshCard(id); updateFloat(); }
+}
+function setQty(id, val){
+  const p = PRODS.find(x=>x.id===id);
+  if(!p) return;
+  let v = parseFloat(val);
+  if(isNaN(v)||v<p.min) v = p.min;
+  document.getElementById("qi-"+id).value = v;
+  if(ORDER[id] !== undefined){ ORDER[id]=v; refreshCard(id); updateFloat(); }
+}
+function addOrder(id){
+  const p = PRODS.find(x=>x.id===id);
+  const inp = document.getElementById("qi-"+id);
+  if(!p||!inp) return;
+  const qty = parseFloat(inp.value)||p.min;
+  ORDER[id] = qty;
+  refreshCard(id);
+  updateFloat();
+  updCnt();
+  toast(LANG==="ur" ? `${p.ur.name} آرڈر میں شامل! ✓` : `${p.en.name} added to order! ✓`);
+}
+function refreshCard(id){
+  const p = PRODS.find(x=>x.id===id);
+  const isAdded = ORDER[id] !== undefined;
+  const btn = document.getElementById("ab-"+id);
+  const subt = document.getElementById("ps-"+id);
+  if(btn){
+    btn.classList.toggle("aded",isAdded);
+    btn.textContent = isAdded
+      ? (LANG==="ur"?"✓ شامل ہے":"✓ Added")
+      : (LANG==="ur"?"آرڈر میں شامل کریں":"Add to Order");
+  }
+  if(subt) subt.textContent = isAdded ? `Rs. ${(ORDER[id]*p.price).toLocaleString()}` : "";
+}
+function updateFloat(){
+  const bar = document.getElementById("floatbar");
+  const sub = getSub();
+  if(sub>0){
+    bar.classList.add("show");
+    document.getElementById("ftot").textContent = "Rs. "+sub.toLocaleString();
+  } else {
+    bar.classList.remove("show");
+  }
+}
+function updCnt(){
+  document.getElementById("ocnt").textContent = Object.keys(ORDER).length;
+}
+function getSub(){ return PRODS.reduce((s,p)=>s+(ORDER[p.id]?ORDER[p.id]*p.price:0),0); }
+function getDel(sub){ return sub>=FREE_DEL ? 0 : DEL_CHARGE; }
+
+/* ══ ORDER PAGE ══ */
+function renderOrder(){
+  const has = Object.keys(ORDER).length > 0;
+  document.getElementById("emptyord").style.display = has?"none":"block";
+  document.getElementById("ordform").style.display = has?"block":"none";
+  if(!has) return;
+
+  const list = document.getElementById("oitemslist");
+  list.innerHTML = Object.entries(ORDER).map(([id,qty])=>{
+    const p = PRODS.find(x=>x.id===id);
+    if(!p) return "";
+    const nm = p[LANG].name;
+    const lt = qty * p.price;
+    return `
+    <div class="oirow">
+      <div>
+        <div class="oiname">${p.em} ${nm}</div>
+        <div class="oiqty">${qty} ${p.unit} × Rs. ${p.price.toLocaleString()}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="oiprice">Rs. ${lt.toLocaleString()}</span>
+        <button class="oirem" onclick="remItem('${id}')" title="Remove">✕</button>
+      </div>
+    </div>`;
+  }).join("");
+
+  const sub = getSub();
+  const del = getDel(sub);
+  const tot = sub + del;
+  document.getElementById("tsubt").textContent = "Rs. "+sub.toLocaleString();
+  document.getElementById("tdel").textContent = del===0
+    ? (LANG==="ur"?"مفت 🎉":"FREE 🎉")
+    : "Rs. "+del.toLocaleString();
+  document.getElementById("ttot").textContent = "Rs. "+tot.toLocaleString();
+  document.getElementById("freenote").classList.toggle("show", sub>=FREE_DEL);
+}
+function remItem(id){
+  delete ORDER[id];
+  updateFloat();
+  updCnt();
+  const btn = document.getElementById("ab-"+id);
+  if(btn){ btn.classList.remove("aded"); btn.textContent = LANG==="ur"?"آرڈر میں شامل کریں":"Add to Order"; }
+  const ps = document.getElementById("ps-"+id);
+  if(ps) ps.textContent = "";
+  renderOrder();
+}
+
+/* ══ LOCATION ══ */
+function getloc(){
+  const btn = document.getElementById("locbtn");
+  const st = document.getElementById("locst");
+  btn.childNodes[1].textContent = " "+(LANG==="ur"?"مل رہی ہے...":"Getting location...");
+  if(!navigator.geolocation){
+    st.textContent = LANG==="ur"?"لوکیشن سپورٹ نہیں":"Geolocation not supported.";
+    st.style.display="block"; return;
+  }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    LOC = pos.coords;
+    btn.querySelector("span:last-child").textContent = " "+(LANG==="ur"?"لوکیشن مل گئی ✓":"Location Captured ✓");
+    btn.style.cssText="border-color:rgba(28,184,110,.5);color:var(--green);background:rgba(28,184,110,.08)";
+    st.textContent = `📍 ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+    st.style.display="block";
+  }, ()=>{
+    btn.querySelector("span:last-child").textContent = " "+(LANG==="ur"?"لوکیشن شیئر کریں":"Share My Live Location");
+    st.textContent = LANG==="ur"?"لوکیشن نہیں ملی، پتہ لکھ دیں":"Couldn't get location. Please write your address.";
+    st.style.color="#e07030"; st.style.display="block";
+  },{timeout:10000,enableHighAccuracy:true});
+}
+
+/* ══ SEND ORDER ══ */
+function sendOrder(){
+  const name = document.getElementById("cname").value.trim();
+  const phone = document.getElementById("cphone").value.trim();
+  const addr = document.getElementById("caddr").value.trim();
+  const note = document.getElementById("cnote").value.trim();
+
+  if(!name){ toast(LANG==="ur"?"نام لکھیں!":"Please enter your name!"); return; }
+  if(!phone){ toast(LANG==="ur"?"فون نمبر لکھیں!":"Phone number required!"); return; }
+  if(!addr){ toast(LANG==="ur"?"پتہ لکھیں!":"Address is required!"); return; }
+  if(!Object.keys(ORDER).length){ toast(LANG==="ur"?"آرڈر خالی ہے!":"Order is empty!"); return; }
+
+  const lines = Object.entries(ORDER).map(([id,qty])=>{
+    const p = PRODS.find(x=>x.id===id);
+    if(!p) return "";
+    return `• ${p.en.name} — ${qty} ${p.unit} = Rs. ${(qty*p.price).toLocaleString()}`;
+  }).filter(Boolean).join("\n");
+
+  const sub = getSub();
+  const del = getDel(sub);
+  const tot = sub + del;
+  const locLine = LOC
+    ? `\n📍 Live Location: https://maps.google.com/?q=${LOC.latitude},${LOC.longitude}`
+    : "\n📍 Location: Not shared";
+
+  const msg =
+`🐄 *${SHOP} — New Order* 🐄
+━━━━━━━━━━━━━━━━━━━━
+👤 Name: ${name}
+📱 Phone: ${phone}
+🏠 Address: ${addr}${note?`\n📝 Note: ${note}`:""}
+━━━━━━━━━━━━━━━━━━━━
+🛒 *Order Items:*
+${lines}
+━━━━━━━━━━━━━━━━━━━━
+🧾 Subtotal: Rs. ${sub.toLocaleString()}
+🚚 Delivery: ${del===0?"FREE 🎉":"Rs. "+del.toLocaleString()}
+💰 *TOTAL: Rs. ${tot.toLocaleString()}*
+━━━━━━━━━━━━━━━━━━━━${locLine}
+
+_Sent via Dilawar Gujjar Dairy Online Store_`;
+
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,"_blank");
+  toast(LANG==="ur"?"واٹس ایپ کھل رہا ہے...":"Opening WhatsApp...");
+}
+
+/* ══ TOAST ══ */
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 2800);
+}
+
+/* ══ INIT ══ */
+document.addEventListener("DOMContentLoaded",()=>{
+  renderHomeCats();
+  renderFilter();
+  renderProds("all");
+});
+</script>
+</body>
+</html>
