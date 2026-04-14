@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>Admin — Dilawar Gujjar Dairy</title>
+<style>
+:root{
+  --b9:#03082e;--b8:#061240;--b7:#0a1f6e;--b6:#1435b5;--b5:#1a4fd8;--b4:#2e6fff;--b3:#5b8fff;
+  --red:#d41f2a;--redb:#ff3a47;--gold:#f5c842;--green:#1cb86e;--orange:#f5a623;
+  --white:#fff;--card:rgba(255,255,255,.07);--border:rgba(77,140,255,.22);
+  --r:14px;--tr:all .25s ease;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(160deg,#0a1f6e 0%,#03082e 45%,#0e0520 100%);min-height:100vh;color:#fff;overflow-x:hidden;}
+button{cursor:pointer;border:none;outline:none;font-family:inherit;}
+input,textarea,select{font-family:inherit;}
+img{display:block;max-width:100%;}
+
+/* ══ LOGIN ══ */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.lbox{background:rgba(255,255,255,.07);border:1.5px solid var(--border);border-radius:24px;padding:40px 28px;width:100%;max-width:370px;backdrop-filter:blur(20px);box-shadow:0 24px 64px rgba(0,0,0,.55);}
+.llogo{text-align:center;margin-bottom:30px;}
+.llogo .em{font-size:2.8rem;display:block;margin-bottom:8px;}
+.llogo h1{font-size:1.25rem;font-weight:800;background:linear-gradient(135deg,#fff 30%,#5b8fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.llogo p{font-size:.68rem;color:rgba(255,255,255,.45);margin-top:4px;letter-spacing:1.5px;text-transform:uppercase;}
+.lfld{margin-bottom:15px;}
+.lfld label{display:block;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;}
+.lfld input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;color:#fff;font-size:.9rem;outline:none;transition:var(--tr);}
+.lfld input:focus{border-color:var(--b4);background:rgba(46,111,255,.1);}
+.lfld input::placeholder{color:rgba(255,255,255,.28);}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--b5),var(--b4));color:#fff;border-radius:11px;padding:14px;font-size:.95rem;font-weight:700;transition:var(--tr);margin-top:8px;}
+.lbtn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,111,255,.5);}
+.lerr{color:#ff7a8a;font-size:.78rem;text-align:center;margin-top:10px;min-height:20px;}
+
+/* ══ ADMIN WRAP ══ */
+#adminPanel{display:none;min-height:100vh;}
+
+/* ══ TOPBAR ══ */
+.topbar{background:rgba(6,18,64,.96);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:10px;}
+.tb-l{display:flex;align-items:center;gap:10px;}
+.tb-ico{width:38px;height:38px;background:linear-gradient(135deg,var(--red),var(--redb));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.tb-info h2{font-size:.92rem;font-weight:800;white-space:nowrap;}
+.tb-info span{font-size:.58rem;color:var(--gold);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.tb-r{display:flex;align-items:center;gap:8px;}
+.statdot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.logoutbtn{background:rgba(212,31,42,.2);border:1px solid rgba(212,31,42,.4);color:#ff7a8a;padding:7px 14px;border-radius:99px;font-size:.72rem;font-weight:700;transition:var(--tr);}
+.logoutbtn:hover{background:rgba(212,31,42,.35);}
+
+/* ══ NAV TABS ══ */
+.navtabs{background:rgba(6,18,64,.7);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px;}
+.navtabs::-webkit-scrollbar{display:none;}
+.ntab{padding:13px 16px;font-size:.72rem;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.45);border-bottom:2.5px solid transparent;transition:var(--tr);white-space:nowrap;background:none;flex-shrink:0;}
+.ntab:hover{color:rgba(255,255,255,.75);}
+.ntab.on{color:var(--b3);border-color:var(--b4);}
+
+/* ══ PAGES ══ */
+.pg{display:none;padding:18px 14px;max-width:900px;margin:0 auto;}
+.pg.on{display:block;}
+
+/* ══ SECTION TITLE ══ */
+.stitle{font-size:1.05rem;font-weight:800;margin-bottom:4px;}
+.ssub{font-size:.75rem;color:rgba(255,255,255,.45);margin-bottom:18px;}
+
+/* ══ STAT CARDS ══ */
+.statgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;}
+@media(min-width:600px){.statgrid{grid-template-columns:repeat(4,1fr);}}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 14px;position:relative;overflow:hidden;}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--b4));}
+.scard .sval{font-size:1.5rem;font-weight:900;margin-bottom:2px;}
+.scard .slbl{font-size:.68rem;color:rgba(255,255,255,.45);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.scard .sico{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:1.8rem;opacity:.25;}
+
+/* ══ CARD ══ */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px;}
+.card-title{font-size:.85rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+
+/* ══ PRODUCT CARD ══ */
+.prodcard{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;transition:var(--tr);}
+.prodcard.off{opacity:.55;}
+.prodcard-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.prod-em{font-size:1.8rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);border-radius:10px;flex-shrink:0;}
+.prod-info{flex:1;min-width:0;}
+.prod-name{font-size:.9rem;font-weight:700;}
+.prod-cat{font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;}
+.prod-price{font-size:.85rem;font-weight:800;color:var(--gold);}
+.toggle-wrap{display:flex;align-items:center;gap:8px;font-size:.72rem;color:rgba(255,255,255,.5);}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:99px;transition:.3s;cursor:pointer;}
+.slider:before{content:'';position:absolute;height:18px;width:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;}
+input:checked+.slider{background:var(--green);}
+input:checked+.slider:before{transform:translateX(20px);}
+.prodcard-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.frow{margin-bottom:0;}
+.frow.full{grid-column:1/-1;}
+.frow label{display:block;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
+.frow input,.frow select{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:9px 10px;color:#fff;font-size:.82rem;outline:none;transition:var(--tr);}
+.frow input:focus,.frow select:focus{border-color:var(--b4);background:rgba(46,111,255,.08);}
+.frow input::placeholder{color:rgba(255,255,255,.25);}
+.savebtn{background:linear-gradient(135deg,var(--b5),var(--b4));color:#fff;border-radius:8px;padding:9px 16px;font-size:.78rem;font-weight:700;transition:var(--tr);margin-top:10px;}
+.savebtn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(46,111,255,.45);}
+.savebtn.red{background:linear-gradient(135deg,#c0392b,var(--red));}
+.savebtn.green{background:linear-gradient(135deg,#16a085,var(--green));}
+.savebtn.gold{background:linear-gradient(135deg,#d4a017,var(--gold));color:#000;}
+.savebtn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* ══ SETTINGS FORM ══ */
+.setfld{margin-bottom:14px;}
+.setfld label{display:block;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.setfld input,.setfld textarea,.setfld select{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;color:#fff;font-size:.88rem;outline:none;transition:var(--tr);}
+.setfld input:focus,.setfld textarea:focus,.setfld select:focus{border-color:var(--b4);background:rgba(46,111,255,.08);}
+.setfld input::placeholder,.setfld textarea::placeholder{color:rgba(255,255,255,.25);}
+.setfld textarea{resize:vertical;min-height:80px;}
+.setrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ══ BANNER TYPE ══ */
+.bantype{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.btype{padding:7px 14px;border-radius:99px;font-size:.72rem;font-weight:700;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);background:transparent;transition:var(--tr);}
+.btype.on{color:#fff;}
+.btype.info.on{background:rgba(46,111,255,.3);border-color:var(--b4);}
+.btype.warn.on{background:rgba(245,166,35,.25);border-color:var(--orange);color:var(--orange);}
+.btype.success.on{background:rgba(28,184,110,.2);border-color:var(--green);color:var(--green);}
+.btype.red.on{background:rgba(212,31,42,.25);border-color:var(--red);color:#ff7a8a;}
+
+/* ══ STORE STATUS ══ */
+.statuscard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:14px;}
+.big-status{font-size:3rem;margin-bottom:10px;}
+.status-txt{font-size:1.1rem;font-weight:800;margin-bottom:6px;}
+.status-sub{font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:20px;}
+.status-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.openbtn{background:linear-gradient(135deg,#16a085,var(--green));color:#fff;padding:12px 28px;border-radius:99px;font-weight:700;font-size:.88rem;transition:var(--tr);}
+.closebtn{background:linear-gradient(135deg,#c0392b,var(--red));color:#fff;padding:12px 28px;border-radius:99px;font-weight:700;font-size:.88rem;transition:var(--tr);}
+.openbtn:hover,.closebtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:24px;right:16px;z-index:999;background:#0d2070;border:1.5px solid rgba(77,140,255,.4);color:#fff;padding:11px 18px;border-radius:11px;font-size:.8rem;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.45);transform:translateY(80px);opacity:0;transition:all .3s;max-width:280px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{border-color:var(--green);background:#0d2a1a;}
+.toast.err{border-color:var(--red);background:#2a0d0d;}
+
+/* ══ BADGE ══ */
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+.badge.fresh{background:rgba(28,184,110,.2);color:var(--green);border:1px solid rgba(28,184,110,.3);}
+.badge.pop{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+
+/* ══ INFO BOX ══ */
+.infobox{background:rgba(46,111,255,.1);border:1px solid rgba(46,111,255,.25);border-radius:10px;padding:12px 14px;font-size:.78rem;color:rgba(255,255,255,.7);margin-bottom:14px;line-height:1.6;}
+.infobox.warn{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3);color:rgba(255,220,100,.8);}
+.infobox.success{background:rgba(28,184,110,.1);border-color:rgba(28,184,110,.3);color:rgba(100,255,180,.8);}
+
+/* ══ ADD PRODUCT ══ */
+.addprod{background:rgba(46,111,255,.08);border:1.5px dashed rgba(46,111,255,.35);border-radius:12px;padding:18px;margin-bottom:14px;}
+.addprod h3{font-size:.85rem;font-weight:700;margin-bottom:14px;color:var(--b3);}
+
+/* ══ LOADING ══ */
+.loader{text-align:center;padding:40px;color:rgba(255,255,255,.4);font-size:.85rem;}
+.spin{display:inline-block;width:24px;height:24px;border:2.5px solid rgba(255,255,255,.15);border-top-color:var(--b4);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ══ DIVIDER ══ */
+.div{height:1px;background:var(--border);margin:18px 0;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:480px){
+  .prodcard-fields{grid-template-columns:1fr;}
+  .setrow{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ LOGIN ════════ -->
+<div id="loginScreen">
+  <div class="lbox">
+    <div class="llogo">
+      <span class="em">🐄</span>
+      <h1>Dilawar Gujjar Dairy</h1>
+      <p>Admin Control Panel</p>
+    </div>
+    <div class="lfld">
+      <label>Email Address</label>
+      <input type="email" id="lemail" placeholder="your@email.com" autocomplete="email"/>
+    </div>
+    <div class="lfld">
+      <label>Password</label>
+      <input type="password" id="lpass" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+    <button class="lbtn" onclick="doLogin()">🔐 Login to Admin</button>
+    <div class="lerr" id="lerr"></div>
+  </div>
+</div>
+
+<!-- ════════ ADMIN PANEL ════════ -->
+<div id="adminPanel">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-l">
+      <div class="tb-ico">🐄</div>
+      <div class="tb-info">
+        <h2>Dilawar Gujjar Dairy</h2>
+        <span>Admin Panel · MR BALOCH</span>
+      </div>
+    </div>
+    <div class="tb-r">
+      <div class="statdot" title="Connected"></div>
+      <button class="logoutbtn" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="navtabs">
+    <button class="ntab on" onclick="showPg('dashboard')">📊 Dashboard</button>
+    <button class="ntab" onclick="showPg('products')">📦 Products</button>
+    <button class="ntab" onclick="showPg('settings')">⚙️ Settings</button>
+    <button class="ntab" onclick="showPg('banner')">📢 Banner</button>
+    <button class="ntab" onclick="showPg('status')">🔒 Store Status</button>
+    <button class="ntab" onclick="showPg('addprod')">➕ Add Product</button>
+  </div>
+
+  <!-- ══ DASHBOARD ══ -->
+  <div class="pg on" id="pg-dashboard">
+    <div style="height:14px;"></div>
+    <div class="stitle">📊 Dashboard</div>
+    <div class="ssub">Live overview of your store</div>
+
+    <div class="statgrid">
+      <div class="scard" style="--accent:var(--b4)">
+        <div class="sval" id="d-products">—</div>
+        <div class="slbl">Total Products</div>
+        <div class="sico">📦</div>
+      </div>
+      <div class="scard" style="--accent:var(--green)">
+        <div class="sval" id="d-active">—</div>
+        <div class="slbl">Active Products</div>
+        <div class="sico">✅</div>
+      </div>
+      <div class="scard" style="--accent:var(--gold)">
+        <div class="sval" id="d-wa">—</div>
+        <div class="slbl">WhatsApp</div>
+        <div class="sico">📱</div>
+      </div>
+      <div class="scard" style="--accent:var(--red)">
+        <div class="sval" id="d-store">—</div>
+        <div class="slbl">Store Status</div>
+        <div class="sico">🏪</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔗 Quick Links</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button class="savebtn" onclick="window.open('index.html','_blank')">🌐 View Store</button>
+        <button class="savebtn gold" onclick="showPg('products')">📦 Manage Products</button>
+        <button class="savebtn green" onclick="showPg('settings')">⚙️ Settings</button>
+        <button class="savebtn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="showPg('banner')">📢 Announcement</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Current Settings</div>
+      <div id="dashSettings" style="font-size:.8rem;line-height:2;color:rgba(255,255,255,.7);"></div>
+    </div>
+
+    <div class="infobox">
+      💡 <strong>Tip:</strong> When you change any setting here, it goes live on your website automatically within seconds. No need to edit index.html manually!
+    </div>
+  </div>
+
+  <!-- ══ PRODUCTS ══ -->
+  <div class="pg" id="pg-products">
+    <div style="height:14px;"></div>
+    <div class="stitle">📦 Product Management</div>
+    <div class="ssub">Enable/disable products, change prices, add photos & videos</div>
+    <div class="infobox warn">
+      ⚠️ Photo/Video: Upload files to your GitHub <strong>images/</strong> folder, then write the filename here (e.g. <strong>milk.jpg</strong> or <strong>milk.mp4</strong>)
+    </div>
+    <div id="prodList"><div class="loader"><div class="spin"></div><br>Loading products...</div></div>
+  </div>
+
+  <!-- ══ SETTINGS ══ -->
+  <div class="pg" id="pg-settings">
+    <div style="height:14px;"></div>
+    <div class="stitle">⚙️ Store Settings</div>
+    <div class="ssub">Change WhatsApp number, delivery charges and more</div>
+
+    <div class="card">
+      <div class="card-title">📱 WhatsApp & Contact</div>
+      <div class="setfld">
+        <label>WhatsApp Number (with country code, no +)</label>
+        <input type="text" id="s-wa" placeholder="923112681751"/>
+      </div>
+      <div class="setfld">
+        <label>Shop Name</label>
+        <input type="text" id="s-shopname" placeholder="Dilawar Gujjar Dairy"/>
+      </div>
+      <div class="setfld">
+        <label>City / Location Badge</label>
+        <input type="text" id="s-city" placeholder="Karachi's Finest Dairy"/>
+      </div>
+      <button class="savebtn green" onclick="saveSettings()">💾 Save Contact Settings</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🚚 Delivery Settings</div>
+      <div class="setrow">
+        <div class="setfld">
+          <label>Delivery Charge (Rs.)</label>
+          <input type="number" id="s-del" placeholder="250"/>
+        </div>
+        <div class="setfld">
+          <label>Free Delivery Above (Rs.)</label>
+          <input type="number" id="s-freedel" placeholder="10000"/>
+        </div>
+      </div>
+      <div class="setfld">
+        <label>Minimum Order Note</label>
+        <input type="text" id="s-minorder" placeholder="Minimum 2 units per dairy item"/>
+      </div>
+      <button class="savebtn green" onclick="saveDelivery()">💾 Save Delivery Settings</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🕐 Order Timing</div>
+      <div class="setrow">
+        <div class="setfld">
+          <label>Order Start Time</label>
+          <input type="text" id="s-tstart" placeholder="6 AM"/>
+        </div>
+        <div class="setfld">
+          <label>Order End Time</label>
+          <input type="text" id="s-tend" placeholder="10 PM"/>
+        </div>
+      </div>
+      <div class="setfld">
+        <label>Delivery Note (shown to customers)</label>
+        <input type="text" id="s-delnote" placeholder="Order by 10 PM — next morning delivery"/>
+      </div>
+      <button class="savebtn green" onclick="saveTiming()">💾 Save Timing</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏠 Hero Section Text</div>
+      <div class="setfld">
+        <label>Hero Main Title</label>
+        <input type="text" id="s-hero" placeholder="Dilawar Gujjar Dairy"/>
+      </div>
+      <div class="setfld">
+        <label>Hero Subtitle</label>
+        <input type="text" id="s-herosub" placeholder="Pure. Fresh. Delivered."/>
+      </div>
+      <div class="setfld">
+        <label>Hero Description</label>
+        <textarea id="s-herodesc" placeholder="Farm-fresh milk, creamy yogurt..."></textarea>
+      </div>
+      <button class="savebtn green" onclick="saveHero()">💾 Save Hero Text</button>
+    </div>
+  </div>
+
+  <!-- ══ BANNER ══ -->
+  <div class="pg" id="pg-banner">
+    <div style="height:14px;"></div>
+    <div class="stitle">📢 Announcement Banner</div>
+    <div class="ssub">Show a notice to all customers on top of your website</div>
+
+    <div class="card">
+      <div class="card-title">🔛 Banner Status</div>
+      <div class="toggle-wrap" style="margin-bottom:16px;font-size:.85rem;color:#fff;">
+        <label class="toggle">
+          <input type="checkbox" id="b-enabled" onchange="toggleBanner()"/>
+          <span class="slider"></span>
+        </label>
+        <span id="b-status-txt">Banner is OFF</span>
+      </div>
+      <div class="div"></div>
+      <div class="setfld">
+        <label>Banner Message</label>
+        <textarea id="b-msg" placeholder="e.g. 🎉 Eid Special: 10% off on all orders today!"></textarea>
+      </div>
+      <div class="setfld">
+        <label>Banner Type</label>
+        <div class="bantype">
+          <button class="btype info on" onclick="setBanType('info',this)">ℹ️ Info</button>
+          <button class="btype warn" onclick="setBanType('warn',this)">⚠️ Warning</button>
+          <button class="btype success" onclick="setBanType('success',this)">✅ Success</button>
+          <button class="btype red" onclick="setBanType('red',this)">🔴 Alert</button>
+        </div>
+      </div>
+      <button class="savebtn" onclick="saveBanner()">💾 Save & Publish Banner</button>
+    </div>
+
+    <div class="infobox">
+      💡 Banner will appear on the top of your store website immediately after saving. Turn off the toggle to hide it.
+    </div>
+  </div>
+
+  <!-- ══ STORE STATUS ══ -->
+  <div class="pg" id="pg-status">
+    <div style="height:14px;"></div>
+    <div class="stitle">🔒 Store Status</div>
+    <div class="ssub">Open or close your store for customers</div>
+
+    <div class="statuscard">
+      <div class="big-status" id="st-icon">🏪</div>
+      <div class="status-txt" id="st-txt">Loading...</div>
+      <div class="status-sub" id="st-sub">Checking store status...</div>
+      <div class="status-btns">
+        <button class="openbtn" onclick="setStoreStatus(true)">✅ Open Store</button>
+        <button class="closebtn" onclick="setStoreStatus(false)">🔒 Close Store</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 Closed Message</div>
+      <div class="setfld">
+        <label>Message shown when store is closed</label>
+        <textarea id="closed-msg" placeholder="Sorry, we are closed right now. We'll be back soon! Order time: 6 AM - 10 PM"></textarea>
+      </div>
+      <button class="savebtn red" onclick="saveClosedMsg()">💾 Save Closed Message</button>
+    </div>
+
+    <div class="infobox warn">
+      ⚠️ When you close the store, customers will see your closed message instead of the menu. They won't be able to place orders.
+    </div>
+  </div>
+
+  <!-- ══ ADD PRODUCT ══ -->
+  <div class="pg" id="pg-addprod">
+    <div style="height:14px;"></div>
+    <div class="stitle">➕ Add New Product</div>
+    <div class="ssub">Add a new product to your store menu</div>
+
+    <div class="card">
+      <div class="setrow">
+        <div class="setfld">
+          <label>Product Name (English)</label>
+          <input type="text" id="np-name" placeholder="e.g. Paneer"/>
+        </div>
+        <div class="setfld">
+          <label>Product Name (Urdu)</label>
+          <input type="text" id="np-nameur" placeholder="مثلاً پنیر"/>
+        </div>
+      </div>
+      <div class="setrow">
+        <div class="setfld">
+          <label>Description (English)</label>
+          <input type="text" id="np-detail" placeholder="Fresh homemade paneer"/>
+        </div>
+        <div class="setfld">
+          <label>Description (Urdu)</label>
+          <input type="text" id="np-detailur" placeholder="تازہ گھر کا پنیر"/>
+        </div>
+      </div>
+      <div class="setrow">
+        <div class="setfld">
+          <label>Price (Rs.)</label>
+          <input type="number" id="np-price" placeholder="500"/>
+        </div>
+        <div class="setfld">
+          <label>Unit</label>
+          <select id="np-unit">
+            <option value="kg">kg</option>
+            <option value="g">g</option>
+            <option value="litre">litre</option>
+            <option value="bottle">bottle</option>
+            <option value="glass">glass</option>
+            <option value="piece">piece</option>
+            <option value="pack">pack</option>
+            <option value="dozen">dozen</option>
+            <option value="loaf">loaf</option>
+            <option value="250g">250g</option>
+          </select>
+        </div>
+      </div>
+      <div class="setrow">
+        <div class="setfld">
+          <label>Category</label>
+          <select id="np-cat">
+            <option value="dairy">🥛 Dairy</option>
+            <option value="ghee">🧈 Ghee & Butter</option>
+            <option value="bakery">🍞 Bakery</option>
+            <option value="drinks">🧃 Drinks</option>
+            <option value="eggs">🥚 Eggs</option>
+          </select>
+        </div>
+        <div class="setfld">
+          <label>Emoji</label>
+          <input type="text" id="np-em" placeholder="🧀"/>
+        </div>
+      </div>
+      <div class="setrow">
+        <div class="setfld">
+          <label>Minimum Order Qty</label>
+          <input type="number" id="np-min" placeholder="1" step="0.5"/>
+        </div>
+        <div class="setfld">
+          <label>Badge</label>
+          <select id="np-badge">
+            <option value="">No Badge</option>
+            <option value="fresh">✅ Fresh</option>
+            <option value="pop">🔥 Popular</option>
+          </select>
+        </div>
+      </div>
+      <div class="setrow">
+        <div class="setfld">
+          <label>Photo Filename (e.g. paneer.jpg)</label>
+          <input type="text" id="np-img" placeholder="paneer.jpg"/>
+        </div>
+        <div class="setfld">
+          <label>Video Filename (e.g. paneer.mp4)</label>
+          <input type="text" id="np-vid" placeholder="paneer.mp4"/>
+        </div>
+      </div>
+      <button class="savebtn green" onclick="addNewProduct()">➕ Add Product to Store</button>
+    </div>
+  </div>
+
+</div><!-- /adminPanel -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ════════ FIREBASE ════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ── FIREBASE CONFIG ──
+const firebaseConfig = {
+  apiKey: "AIzaSyBbsi-8Wv_P6OHJoMWM0ZbQk1CcVKPr0xc",
+  authDomain: "dilawar-gujjar-dairy-4a2a2.firebaseapp.com",
+  databaseURL: "https://dilawar-gujjar-dairy-4a2a2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "dilawar-gujjar-dairy-4a2a2",
+  storageBucket: "dilawar-gujjar-dairy-4a2a2.firebasestorage.app",
+  messagingSenderId: "65213841401",
+  appId: "1:65213841401:web:c526381509763208258728",
+  measurementId: "G-BQ4V615F55"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// ── DEFAULT DATA ──
+const DEFAULT_SETTINGS = {
+  wa: "923112681751",
+  shopname: "Dilawar Gujjar Dairy",
+  city: "Karachi's Finest Dairy",
+  delCharge: 250,
+  freeDelAbove: 10000,
+  minorder: "Minimum 2 units per dairy item",
+  orderStart: "6 AM",
+  orderEnd: "10 PM",
+  deliveryNote: "Order by 10 PM — next morning delivery",
+  heroTitle: "Dilawar Gujjar Dairy",
+  heroSub: "Pure. Fresh. Delivered.",
+  heroDesc: "Farm-fresh milk, creamy yogurt, golden desi ghee and more — delivered straight to your door. Order on WhatsApp in seconds!"
+};
+
+const DEFAULT_PRODUCTS = [
+  {id:"milk",  cat:"dairy", em:"🥛", badge:"fresh", en:{name:"Fresh Milk",detail:"Pure desi cow milk"},ur:{name:"تازہ دودھ",detail:"خالص دیسی گائے کا دودھ"},price:240,unit:"kg",ulen:"per kg",ulur:"فی کلو",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#e8f4ff,#b5d5ff)"},
+  {id:"dahi",  cat:"dairy", em:"🫙", badge:"fresh", en:{name:"Dahi (Yogurt)",detail:"Thick creamy yogurt"},ur:{name:"دہی",detail:"موٹا کریمی دہی"},price:400,unit:"kg",ulen:"per kg",ulur:"فی کلو",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fff5e8,#ffd9a0)"},
+  {id:"lassi", cat:"dairy", em:"🥤", badge:"pop",   en:{name:"Lassi",detail:"Fresh sweet lassi glass"},ur:{name:"لسی",detail:"تازہ میٹھی لسی کا گلاس"},price:210,unit:"glass",ulen:"per glass",ulur:"فی گلاس",min:2,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#e8fff2,#a0ffd0)"},
+  {id:"bottle",cat:"dairy", em:"🍼", badge:"fresh", en:{name:"Milk Bottle",detail:"Sealed 1L milk bottle"},ur:{name:"دودھ کی بوتل",detail:"سیل شدہ 1 لیٹر بوتل"},price:200,unit:"bottle",ulen:"per bottle",ulur:"فی بوتل",min:2,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#eef3ff,#c8d8ff)"},
+  {id:"ghee",  cat:"ghee",  em:"🧈", badge:"pop",   en:{name:"Desi Ghee",detail:"Pure homemade desi ghee"},ur:{name:"دیسی گھی",detail:"خالص گھر کا دیسی گھی"},price:2800,unit:"kg",ulen:"per kg",ulur:"فی کلو",min:0.5,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fff9e0,#ffe89a)"},
+  {id:"butter",cat:"ghee",  em:"🟡", badge:"",      en:{name:"White Butter (Makhan)",detail:"Fresh white butter"},ur:{name:"سفید مکھن",detail:"تازہ سفید مکھن"},price:600,unit:"250g",ulen:"per 250g",ulur:"250 گرام",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fffff0,#fff5b0)"},
+  {id:"bread", cat:"bakery",em:"🍞", badge:"",      en:{name:"Double Roti",detail:"Fresh baked bread loaf"},ur:{name:"ڈبل روٹی",detail:"تازہ پکا ہوا ڈبل روٹی"},price:80,unit:"loaf",ulen:"per loaf",ulur:"فی روٹی",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fff0e0,#ffd6a0)"},
+  {id:"pappi", cat:"bakery",em:"🥐", badge:"pop",   en:{name:"Pappi",detail:"Crispy puff pastry"},ur:{name:"پاپی",detail:"کرسپی پف پیسٹری"},price:30,unit:"piece",ulen:"per piece",ulur:"فی عدد",min:2,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fff5e8,#ffddaa)"},
+  {id:"biscuit",cat:"bakery",em:"🍪",badge:"",      en:{name:"Biscuits / Crackers",detail:"Assorted biscuit pack"},ur:{name:"بسکٹ / کریکرز",detail:"مکس بسکٹ پیکٹ"},price:150,unit:"pack",ulen:"per pack",ulur:"فی پیکٹ",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fdf0e0,#fad8b0)"},
+  {id:"rusk",  cat:"bakery",em:"🧁", badge:"",      en:{name:"Cake Rusk",detail:"Sweet toasted cake rusk"},ur:{name:"کیک رسک",detail:"میٹھا کیک رسک"},price:120,unit:"pack",ulen:"per pack",ulur:"فی پیکٹ",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fff0f8,#ffc8e8)"},
+  {id:"juice", cat:"drinks",em:"🧃", badge:"",      en:{name:"Fresh Juice",detail:"Seasonal fresh juice bottle"},ur:{name:"تازہ جوس",detail:"موسمی تازہ جوس"},price:150,unit:"bottle",ulen:"per bottle",ulur:"فی بوتل",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#e8fff0,#b0ffc8)"},
+  {id:"cold",  cat:"drinks",em:"🥤", badge:"",      en:{name:"Cold Drink",detail:"Chilled cold drink bottle"},ur:{name:"کولڈ ڈرنک",detail:"ٹھنڈی کولڈ ڈرنک"},price:100,unit:"bottle",ulen:"per bottle",ulur:"فی بوتل",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#e0f8ff,#a0e8ff)"},
+  {id:"eggs",  cat:"eggs",  em:"🥚", badge:"fresh", en:{name:"Farm Eggs",detail:"Fresh farm eggs"},ur:{name:"تازہ انڈے",detail:"فارم کے تازہ انڈے"},price:360,unit:"dozen",ulen:"per dozen",ulur:"فی درجن",min:1,img:"",vid:"",enabled:true,bg:"linear-gradient(135deg,#fffce0,#ffeea0)"},
+];
+
+let PRODS = [];
+let SETTINGS = {};
+let BANNER = {enabled:false,msg:"",type:"info"};
+let STORE_OPEN = true;
+let CLOSED_MSG = "";
+let BANTYPE = "info";
+
+// ── AUTH STATE ──
+onAuthStateChanged(auth, user => {
+  if(user){
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    loadAllData();
+  } else {
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("adminPanel").style.display = "none";
+  }
+});
+
+// ── LOGIN ──
+window.doLogin = async function(){
+  const email = document.getElementById("lemail").value.trim();
+  const pass = document.getElementById("lpass").value;
+  const errEl = document.getElementById("lerr");
+  errEl.textContent = "";
+  if(!email||!pass){errEl.textContent="Please enter email and password.";return;}
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+  } catch(e){
+    errEl.textContent = "Wrong email or password. Try again!";
+  }
+};
+
+// ── LOGOUT ──
+window.doLogout = async function(){
+  await signOut(auth);
+};
+
+// ── INIT DATA IN FIREBASE ──
+async function initFirebaseData(){
+  const snap = await get(ref(db,"store"));
+  if(!snap.exists()){
+    // First time — set default data
+    await set(ref(db,"store"),{
+      settings: DEFAULT_SETTINGS,
+      products: Object.fromEntries(DEFAULT_PRODUCTS.map(p=>([p.id,p]))),
+      banner: {enabled:false,msg:"",type:"info"},
+      storeOpen: true,
+      closedMsg: "Sorry, we are closed right now. We will be back soon! Order time: 6 AM - 10 PM"
+    });
+    showToast("✅ Store data initialized!","ok");
+  }
+}
+
+// ── LOAD ALL DATA ──
+async function loadAllData(){
+  await initFirebaseData();
+  onValue(ref(db,"store"), snap=>{
+    const data = snap.val()||{};
+    SETTINGS = {...DEFAULT_SETTINGS,...(data.settings||{})};
+    PRODS = data.products ? Object.values(data.products) : DEFAULT_PRODUCTS;
+    BANNER = data.banner||{enabled:false,msg:"",type:"info"};
+    STORE_OPEN = data.storeOpen !== false;
+    CLOSED_MSG = data.closedMsg||"";
+    BANTYPE = BANNER.type||"info";
+    renderDashboard();
+    renderProducts();
+    renderSettingsForm();
+    renderBannerForm();
+    renderStatusForm();
+  });
+}
+
+// ── DASHBOARD ──
+function renderDashboard(){
+  const active = PRODS.filter(p=>p.enabled!==false).length;
+  document.getElementById("d-products").textContent = PRODS.length;
+  document.getElementById("d-active").textContent = active;
+  document.getElementById("d-wa").textContent = "+"+SETTINGS.wa;
+  document.getElementById("d-store").textContent = STORE_OPEN?"🟢 Open":"🔴 Closed";
+  document.getElementById("dashSettings").innerHTML = `
+    <div>🏪 <strong>Shop:</strong> ${SETTINGS.shopname}</div>
+    <div>📍 <strong>City:</strong> ${SETTINGS.city}</div>
+    <div>🚚 <strong>Delivery:</strong> Rs. ${SETTINGS.delCharge} (Free above Rs. ${SETTINGS.freeDelAbove})</div>
+    <div>🕐 <strong>Order Time:</strong> ${SETTINGS.orderStart} – ${SETTINGS.orderEnd}</div>
+    <div>📢 <strong>Banner:</strong> ${BANNER.enabled?"ON — "+BANNER.msg.substring(0,40)+"...":"OFF"}</div>
+  `;
+}
+
+// ── PRODUCTS ──
+function renderProducts(){
+  const el = document.getElementById("prodList");
+  if(!PRODS.length){el.innerHTML='<div class="loader">No products found.</div>';return;}
+  el.innerHTML = PRODS.map(p=>{
+    const isOn = p.enabled !== false;
+    return `
+    <div class="prodcard ${isOn?"":"off"}" id="pc-${p.id}">
+      <div class="prodcard-top">
+        <div class="prod-em">${p.em||"📦"}</div>
+        <div class="prod-info">
+          <div class="prod-name">${p.en?.name||p.name||"Product"} ${p.badge?`<span class="badge ${p.badge}">${p.badge==="fresh"?"Fresh":"Popular"}</span>`:""}</div>
+          <div class="prod-cat">${p.cat||""} · ${p.unit||""}</div>
+          <div class="prod-price">Rs. ${p.price?.toLocaleString()}</div>
+        </div>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" id="tog-${p.id}" ${isOn?"checked":""} onchange="toggleProduct('${p.id}',this.checked)"/>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="prodcard-fields">
+        <div class="frow">
+          <label>Price (Rs.)</label>
+          <input type="number" id="pr-${p.id}" value="${p.price}" min="1"/>
+        </div>
+        <div class="frow">
+          <label>Min Order (${p.unit})</label>
+          <input type="number" id="mn-${p.id}" value="${p.min}" step="0.5" min="0.1"/>
+        </div>
+        <div class="frow">
+          <label>Photo (images/milk.jpg)</label>
+          <input type="text" id="img-${p.id}" value="${p.img||""}" placeholder="milk.jpg"/>
+        </div>
+        <div class="frow">
+          <label>Video (images/milk.mp4)</label>
+          <input type="text" id="vid-${p.id}" value="${p.vid||""}" placeholder="milk.mp4"/>
+        </div>
+        <div class="frow">
+          <label>Name (English)</label>
+          <input type="text" id="nen-${p.id}" value="${p.en?.name||""}"/>
+        </div>
+        <div class="frow">
+          <label>Name (Urdu)</label>
+          <input type="text" id="nur-${p.id}" value="${p.ur?.name||""}"/>
+        </div>
+      </div>
+      <button class="savebtn" onclick="saveProduct('${p.id}')">💾 Save ${p.en?.name||"Product"}</button>
+    </div>`;
+  }).join("");
+}
+
+// ── TOGGLE PRODUCT ──
+window.toggleProduct = async function(id, val){
+  await update(ref(db,`store/products/${id}`),{enabled:val});
+  showToast(val?"✅ Product enabled!":"⛔ Product disabled!","ok");
+};
+
+// ── SAVE PRODUCT ──
+window.saveProduct = async function(id){
+  const price = parseFloat(document.getElementById("pr-"+id).value)||0;
+  const min = parseFloat(document.getElementById("mn-"+id).value)||1;
+  const img = document.getElementById("img-"+id).value.trim();
+  const vid = document.getElementById("vid-"+id).value.trim();
+  const nen = document.getElementById("nen-"+id).value.trim();
+  const nur = document.getElementById("nur-"+id).value.trim();
+  const imgPath = img ? (img.startsWith("images/")?"":img.startsWith("http")?"":"images/")+img : "";
+  const vidPath = vid ? (vid.startsWith("images/")?"":vid.startsWith("http")?"":"images/")+vid : "";
+  await update(ref(db,`store/products/${id}`),{
+    price, min,
+    img: imgPath,
+    vid: vidPath,
+    en: {name: nen, detail: PRODS.find(p=>p.id===id)?.en?.detail||""},
+    ur: {name: nur, detail: PRODS.find(p=>p.id===id)?.ur?.detail||""},
+  });
+  showToast("✅ Product saved!","ok");
+};
+
+// ── SETTINGS FORM ──
+function renderSettingsForm(){
+  const s = SETTINGS;
+  const fields = {
+    "s-wa":s.wa,"s-shopname":s.shopname,"s-city":s.city,
+    "s-del":s.delCharge,"s-freedel":s.freeDelAbove,"s-minorder":s.minorder,
+    "s-tstart":s.orderStart,"s-tend":s.orderEnd,"s-delnote":s.deliveryNote,
+    "s-hero":s.heroTitle,"s-herosub":s.heroSub,"s-herodesc":s.heroDesc,
+  };
+  for(const [id,val] of Object.entries(fields)){
+    const el = document.getElementById(id);
+    if(el && val!==undefined) el.value = val;
+  }
+}
+
+window.saveSettings = async function(){
+  const updates = {
+    "store/settings/wa": document.getElementById("s-wa").value.trim().replace(/\D/g,""),
+    "store/settings/shopname": document.getElementById("s-shopname").value.trim(),
+    "store/settings/city": document.getElementById("s-city").value.trim(),
+  };
+  await update(ref(db),updates);
+  showToast("✅ Contact settings saved!","ok");
+};
+
+window.saveDelivery = async function(){
+  const updates = {
+    "store/settings/delCharge": parseFloat(document.getElementById("s-del").value)||250,
+    "store/settings/freeDelAbove": parseFloat(document.getElementById("s-freedel").value)||10000,
+    "store/settings/minorder": document.getElementById("s-minorder").value.trim(),
+  };
+  await update(ref(db),updates);
+  showToast("✅ Delivery settings saved!","ok");
+};
+
+window.saveTiming = async function(){
+  const updates = {
+    "store/settings/orderStart": document.getElementById("s-tstart").value.trim(),
+    "store/settings/orderEnd": document.getElementById("s-tend").value.trim(),
+    "store/settings/deliveryNote": document.getElementById("s-delnote").value.trim(),
+  };
+  await update(ref(db),updates);
+  showToast("✅ Timing saved!","ok");
+};
+
+window.saveHero = async function(){
+  const updates = {
+    "store/settings/heroTitle": document.getElementById("s-hero").value.trim(),
+    "store/settings/heroSub": document.getElementById("s-herosub").value.trim(),
+    "store/settings/heroDesc": document.getElementById("s-herodesc").value.trim(),
+  };
+  await update(ref(db),updates);
+  showToast("✅ Hero text saved!","ok");
+};
+
+// ── BANNER ──
+function renderBannerForm(){
+  document.getElementById("b-enabled").checked = BANNER.enabled;
+  document.getElementById("b-msg").value = BANNER.msg||"";
+  document.getElementById("b-status-txt").textContent = BANNER.enabled?"Banner is ON":"Banner is OFF";
+  document.querySelectorAll(".btype").forEach(b=>{
+    b.classList.remove("on");
+    if(b.classList.contains(BANNER.type||"info")) b.classList.add("on");
+  });
+}
+
+window.toggleBanner = function(){
+  const on = document.getElementById("b-enabled").checked;
+  document.getElementById("b-status-txt").textContent = on?"Banner is ON":"Banner is OFF";
+};
+
+window.setBanType = function(type, btn){
+  BANTYPE = type;
+  document.querySelectorAll(".btype").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+};
+
+window.saveBanner = async function(){
+  const enabled = document.getElementById("b-enabled").checked;
+  const msg = document.getElementById("b-msg").value.trim();
+  await update(ref(db,"store/banner"),{enabled,msg,type:BANTYPE});
+  showToast(enabled?"✅ Banner published!":"✅ Banner hidden!","ok");
+};
+
+// ── STORE STATUS ──
+function renderStatusForm(){
+  document.getElementById("st-icon").textContent = STORE_OPEN?"🏪":"🔒";
+  document.getElementById("st-txt").textContent = STORE_OPEN?"Store is OPEN":"Store is CLOSED";
+  document.getElementById("st-sub").textContent = STORE_OPEN?
+    "Customers can view products and place orders.":
+    "Customers see your closed message. Orders are disabled.";
+  const el = document.getElementById("closed-msg");
+  if(el) el.value = CLOSED_MSG;
+}
+
+window.setStoreStatus = async function(open){
+  await update(ref(db,"store"),{storeOpen:open});
+  showToast(open?"✅ Store is now OPEN!":"🔒 Store is now CLOSED!","ok");
+};
+
+window.saveClosedMsg = async function(){
+  const msg = document.getElementById("closed-msg").value.trim();
+  await update(ref(db,"store"),{closedMsg:msg});
+  showToast("✅ Closed message saved!","ok");
+};
+
+// ── ADD PRODUCT ──
+window.addNewProduct = async function(){
+  const name = document.getElementById("np-name").value.trim();
+  const nameur = document.getElementById("np-nameur").value.trim();
+  const detail = document.getElementById("np-detail").value.trim();
+  const detailur = document.getElementById("np-detailur").value.trim();
+  const price = parseFloat(document.getElementById("np-price").value)||0;
+  const unit = document.getElementById("np-unit").value;
+  const cat = document.getElementById("np-cat").value;
+  const em = document.getElementById("np-em").value.trim()||"📦";
+  const min = parseFloat(document.getElementById("np-min").value)||1;
+  const badge = document.getElementById("np-badge").value;
+  const img = document.getElementById("np-img").value.trim();
+  const vid = document.getElementById("np-vid").value.trim();
+
+  if(!name||!price){showToast("⚠️ Name and price are required!","err");return;}
+
+  const id = name.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"");
+  const imgPath = img ? "images/"+img.replace("images/","") : "";
+  const vidPath = vid ? "images/"+vid.replace("images/","") : "";
+
+  const newProd = {
+    id, cat, em, badge,
+    en:{name,detail},
+    ur:{name:nameur||name, detail:detailur||detail},
+    price, unit,
+    ulen:"per "+unit, ulur:"فی "+unit,
+    min, img:imgPath, vid:vidPath,
+    enabled:true,
+    bg:"linear-gradient(135deg,#e8f4ff,#b5d5ff)"
+  };
+
+  await set(ref(db,`store/products/${id}`),newProd);
+  // Clear form
+  ["np-name","np-nameur","np-detail","np-detailur","np-price","np-em","np-img","np-vid"].forEach(f=>{
+    const el = document.getElementById(f);
+    if(el) el.value="";
+  });
+  document.getElementById("np-min").value="1";
+  showToast("✅ Product added to store!","ok");
+  showPg("products");
+};
+
+// ── NAV ──
+window.showPg = function(id){
+  document.querySelectorAll(".pg").forEach(p=>p.classList.remove("on"));
+  document.querySelectorAll(".ntab").forEach(t=>t.classList.remove("on"));
+  const pg = document.getElementById("pg-"+id);
+  if(pg) pg.classList.add("on");
+  document.querySelectorAll(".ntab").forEach(t=>{
+    if(t.textContent.toLowerCase().includes(id.substring(0,4))) t.classList.add("on");
+  });
+};
+
+// ── TOAST ──
+window.showToast = function(msg, type=""){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast "+type+" show";
+  setTimeout(()=>t.classList.remove("show"),3000);
+};
+
+// ── ENTER KEY LOGIN ──
+document.getElementById("lpass").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+</script>
+</body>
+</html>

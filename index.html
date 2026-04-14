@@ -645,14 +645,31 @@ body.ur .toast.show{transform:translateX(0);}
   </button>
 </nav>
 
-<script>
+<script type="module">
+/* ══ FIREBASE CONNECTED — Controlled by Admin Panel ══ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBbsi-8Wv_P6OHJoMWM0ZbQk1CcVKPr0xc",
+  authDomain: "dilawar-gujjar-dairy-4a2a2.firebaseapp.com",
+  databaseURL: "https://dilawar-gujjar-dairy-4a2a2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "dilawar-gujjar-dairy-4a2a2",
+  storageBucket: "dilawar-gujjar-dairy-4a2a2.firebasestorage.app",
+  messagingSenderId: "65213841401",
+  appId: "1:65213841401:web:c526381509763208258728",
+  measurementId: "G-BQ4V615F55"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+
 /* ══════════════════════════════════════════
-   CONFIG — EDIT THESE
+   CONFIG — NOW CONTROLLED BY ADMIN PANEL
 ══════════════════════════════════════════ */
-const WA = "923112681751"; // WHATSAPP_NUMBER ← Replace with your actual number
-const SHOP = "Dilawar Gujjar Dairy";
-const FREE_DEL = 10000;
-const DEL_CHARGE = 250;
+let WA = "923112681751";
+let SHOP = "Dilawar Gujjar Dairy";
+let FREE_DEL = 10000;
+let DEL_CHARGE = 250;
 
 /* ══ CATEGORIES ══ */
 const CATS = [
@@ -664,117 +681,14 @@ const CATS = [
   {id:"eggs",  en:"Eggs",           ur:"انڈے",       em:"🥚"},
 ];
 
-/* ══ PRODUCTS ══
-   📸 PHOTO لگانے کے لیے:  img:"images/milk.jpg"  add کریں product میں
-   🎬 VIDEO لگانے کے لیے:  vid:"images/milk.mp4"  add کریں (video ہو تو photo چھپ جائے گی)
-   ✅ جب photo یا video ہو تو emoji خود بخود چھپ جائے گا
-   📁 GitHub پر: images/ فولڈر بنائیں، نیچے دیے نام رکھیں
-*/
-const PRODS = [
-  // ─ DAIRY ─
-  {id:"milk",  cat:"dairy", em:"🥛", badge:"fresh",
-   img:"", vid:"",   // → images/milk.jpg  یا  images/milk.mp4
-   en:{name:"Fresh Milk",        detail:"Pure desi cow milk"},
-   ur:{name:"تازہ دودھ",         detail:"خالص دیسی گائے کا دودھ"},
-   price:240, unit:"kg",    ulen:"per kg",    ulur:"فی کلو",   min:1,
-   bg:"linear-gradient(135deg,#e8f4ff,#b5d5ff)"},
-
-  {id:"dahi",  cat:"dairy", em:"🫙", badge:"fresh",
-   img:"", vid:"",   // → images/dahi.jpg  یا  images/dahi.mp4
-   en:{name:"Dahi (Yogurt)",     detail:"Thick creamy yogurt"},
-   ur:{name:"دہی",               detail:"موٹا کریمی دہی"},
-   price:400, unit:"kg",    ulen:"per kg",    ulur:"فی کلو",   min:1,
-   bg:"linear-gradient(135deg,#fff5e8,#ffd9a0)"},
-
-  {id:"lassi", cat:"dairy", em:"🥤", badge:"pop",
-   img:"", vid:"",   // → images/lassi.jpg  یا  images/lassi.mp4
-   en:{name:"Lassi",             detail:"Fresh sweet lassi glass"},
-   ur:{name:"لسی",               detail:"تازہ میٹھی لسی کا گلاس"},
-   price:210, unit:"glass",  ulen:"per glass", ulur:"فی گلاس", min:2,
-   bg:"linear-gradient(135deg,#e8fff2,#a0ffd0)"},
-
-  {id:"bottle",cat:"dairy", em:"🍼", badge:"fresh",
-   img:"", vid:"",   // → images/bottle.jpg  یا  images/bottle.mp4
-   en:{name:"Milk Bottle",       detail:"Sealed 1L milk bottle"},
-   ur:{name:"دودھ کی بوتل",      detail:"سیل شدہ 1 لیٹر بوتل"},
-   price:200, unit:"bottle", ulen:"per bottle",ulur:"فی بوتل", min:2,
-   bg:"linear-gradient(135deg,#eef3ff,#c8d8ff)"},
-
-  // ─ GHEE & BUTTER ─
-  {id:"ghee",  cat:"ghee",  em:"🧈", badge:"pop",
-   img:"", vid:"",   // → images/ghee.jpg  یا  images/ghee.mp4
-   en:{name:"Desi Ghee",         detail:"Pure homemade desi ghee"},
-   ur:{name:"دیسی گھی",          detail:"خالص گھر کا دیسی گھی"},
-   price:2800,unit:"kg",    ulen:"per kg",    ulur:"فی کلو",   min:0.5,
-   bg:"linear-gradient(135deg,#fff9e0,#ffe89a)"},
-
-  {id:"butter",cat:"ghee",  em:"🟡", badge:"",
-   img:"", vid:"",   // → images/butter.jpg  یا  images/butter.mp4
-   en:{name:"White Butter (Makhan)", detail:"Fresh white butter"},
-   ur:{name:"سفید مکھن",          detail:"تازہ سفید مکھن"},
-   price:600, unit:"250g",  ulen:"per 250g",  ulur:"250 گرام", min:1,
-   bg:"linear-gradient(135deg,#fffff0,#fff5b0)"},
-
-  // ─ BAKERY ─
-  {id:"bread", cat:"bakery",em:"🍞", badge:"",
-   img:"", vid:"",   // → images/bread.jpg  یا  images/bread.mp4
-   en:{name:"Double Roti",       detail:"Fresh baked bread loaf"},
-   ur:{name:"ڈبل روٹی",          detail:"تازہ پکا ہوا ڈبل روٹی"},
-   price:80,  unit:"loaf",  ulen:"per loaf",  ulur:"فی روٹی", min:1,
-   bg:"linear-gradient(135deg,#fff0e0,#ffd6a0)"},
-
-  {id:"pappi", cat:"bakery",em:"🥐", badge:"pop",
-   img:"", vid:"",   // → images/pappi.jpg  یا  images/pappi.mp4
-   en:{name:"Pappi",             detail:"Crispy puff pastry"},
-   ur:{name:"پاپی",              detail:"کرسپی پف پیسٹری"},
-   price:30,  unit:"piece", ulen:"per piece", ulur:"فی عدد",  min:2,
-   bg:"linear-gradient(135deg,#fff5e8,#ffddaa)"},
-
-  {id:"biscuit",cat:"bakery",em:"🍪",badge:"",
-   img:"", vid:"",   // → images/biscuit.jpg  یا  images/biscuit.mp4
-   en:{name:"Biscuits / Crackers",detail:"Assorted biscuit pack"},
-   ur:{name:"بسکٹ / کریکرز",     detail:"مکس بسکٹ پیکٹ"},
-   price:150, unit:"pack",  ulen:"per pack",  ulur:"فی پیکٹ", min:1,
-   bg:"linear-gradient(135deg,#fdf0e0,#fad8b0)"},
-
-  {id:"rusk",  cat:"bakery",em:"🧁", badge:"",
-   img:"", vid:"",   // → images/rusk.jpg  یا  images/rusk.mp4
-   en:{name:"Cake Rusk",         detail:"Sweet toasted cake rusk"},
-   ur:{name:"کیک رسک",           detail:"میٹھا کیک رسک"},
-   price:120, unit:"pack",  ulen:"per pack",  ulur:"فی پیکٹ", min:1,
-   bg:"linear-gradient(135deg,#fff0f8,#ffc8e8)"},
-
-  // ─ DRINKS ─
-  {id:"juice", cat:"drinks",em:"🧃", badge:"",
-   img:"", vid:"",   // → images/juice.jpg  یا  images/juice.mp4
-   en:{name:"Fresh Juice",       detail:"Seasonal fresh juice bottle"},
-   ur:{name:"تازہ جوس",          detail:"موسمی تازہ جوس"},
-   price:150, unit:"bottle", ulen:"per bottle",ulur:"فی بوتل", min:1,
-   bg:"linear-gradient(135deg,#e8fff0,#b0ffc8)"},
-
-  {id:"cold",  cat:"drinks",em:"🥤", badge:"",
-   img:"", vid:"",   // → images/cold.jpg  یا  images/cold.mp4
-   en:{name:"Cold Drink",        detail:"Chilled cold drink bottle"},
-   ur:{name:"کولڈ ڈرنک",         detail:"ٹھنڈی کولڈ ڈرنک"},
-   price:100, unit:"bottle", ulen:"per bottle",ulur:"فی بوتل", min:1,
-   bg:"linear-gradient(135deg,#e0f8ff,#a0e8ff)"},
-
-  // ─ EGGS ─
-  {id:"eggs",  cat:"eggs",  em:"🥚", badge:"fresh",
-   img:"", vid:"",   // → images/eggs.jpg  یا  images/eggs.mp4
-   en:{name:"Farm Eggs",         detail:"Fresh farm eggs"},
-   ur:{name:"تازہ انڈے",         detail:"فارم کے تازہ انڈے"},
-   price:360, unit:"dozen", ulen:"per dozen", ulur:"فی درجن", min:1,
-   bg:"linear-gradient(135deg,#fffce0,#ffeea0)"},
-];
-
 /* ══ STATE ══ */
 let LANG = "en";
-let ORDER = {}; // {id: qty}
+let ORDER = {};
 let LOC = null;
 let CUR_PAGE = "home";
 let HIST = ["home"];
 let ACT_FILTER = "all";
+let PRODS = [];
 
 /* ══ LANGUAGE ══ */
 function setLang(l){
@@ -1080,11 +994,56 @@ function toast(msg){
   setTimeout(()=>t.classList.remove("show"), 2800);
 }
 
-/* ══ INIT ══ */
+/* ══ FIREBASE INIT — Load store data from Admin Panel ══ */
 document.addEventListener("DOMContentLoaded",()=>{
-  renderHomeCats();
-  renderFilter();
-  renderProds("all");
+  onValue(ref(db,"store"), snap=>{
+    const data = snap.val();
+    if(!data) return;
+
+    // Load settings
+    if(data.settings){
+      const s = data.settings;
+      if(s.wa) WA = s.wa;
+      if(s.shopname) SHOP = s.shopname;
+      if(s.delCharge) DEL_CHARGE = parseFloat(s.delCharge)||250;
+      if(s.freeDelAbove) FREE_DEL = parseFloat(s.freeDelAbove)||10000;
+      // Update hero text
+      const heroTitle = document.querySelector('[data-en="Dilawar Gujjar Dairy"]');
+      if(heroTitle && s.heroTitle){ heroTitle.setAttribute("data-en",s.heroTitle); heroTitle.textContent=s.heroTitle; }
+      const heroPara = document.querySelector('.hero p[data-en]');
+      if(heroPara && s.heroDesc){ heroPara.setAttribute("data-en",s.heroDesc); heroPara.textContent=s.heroDesc; }
+    }
+
+    // Store open/close
+    if(data.storeOpen === false){
+      const msg = data.closedMsg || "Sorry, we are closed right now. Please come back later!";
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+      document.getElementById('p-home').classList.add('on');
+      const hero = document.querySelector('.hero-l');
+      if(hero) hero.innerHTML = `<div style="background:rgba(212,31,42,.12);border:1.5px solid rgba(212,31,42,.3);border-radius:18px;padding:28px 20px;text-align:center;"><div style="font-size:3rem;margin-bottom:12px;">🔒</div><h2 style="color:#ff7a8a;margin-bottom:10px;">Store Closed</h2><p style="color:rgba(255,255,255,.6);line-height:1.7;">${msg}</p></div>`;
+    }
+
+    // Announcement banner
+    if(data.banner && data.banner.enabled && data.banner.msg){
+      const colors = {info:"rgba(46,111,255,.18)",warn:"rgba(245,166,35,.18)",success:"rgba(28,184,110,.18)",red:"rgba(212,31,42,.18)"};
+      const borders = {info:"rgba(46,111,255,.4)",warn:"rgba(245,166,35,.4)",success:"rgba(28,184,110,.4)",red:"rgba(212,31,42,.4)"};
+      const t = data.banner.type||"info";
+      const banner = document.createElement("div");
+      banner.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:200;background:${colors[t]||colors.info};border-bottom:1.5px solid ${borders[t]||borders.info};backdrop-filter:blur(12px);padding:9px 16px;text-align:center;font-size:.8rem;font-weight:600;color:#fff;`;
+      banner.innerHTML = `${data.banner.msg} <button onclick="this.parentElement.remove()" style="background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;margin-left:8px;font-size:1rem;">✕</button>`;
+      document.body.prepend(banner);
+    }
+
+    // Load products
+    if(data.products){
+      PRODS = Object.values(data.products).filter(p=>p.enabled!==false);
+    }
+
+    // Render everything
+    renderHomeCats();
+    renderFilter();
+    renderProds("all");
+  });
 });
 </script>
 </body>
